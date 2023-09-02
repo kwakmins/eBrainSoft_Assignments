@@ -1,1 +1,2 @@
-# eBrainSoft_Assignments
+# [eBrainSoft] 웹개발 취준생을 위한 포트폴리오 스터디 8기 과제
+
