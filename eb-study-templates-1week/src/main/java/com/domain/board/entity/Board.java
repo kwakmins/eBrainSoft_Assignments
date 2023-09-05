@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class Board {
 
   private Long boardId;
+  private Long categoryId;
   private String user;
   private String password;
   private String content;
@@ -66,5 +67,13 @@ public class Board {
 
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
+  }
+
+  public Long getCategoryId() {
+    return categoryId;
+  }
+
+  public void setCategoryId(Long categoryId) {
+    this.categoryId = categoryId;
   }
 }
