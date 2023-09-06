@@ -1,8 +1,8 @@
 package com.domain.category.dao;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
+import java.util.Map;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
@@ -10,10 +10,10 @@ import org.junit.jupiter.api.DisplayName;
 public class CategoryRepositoryTest {
 
   @Test
-  @DisplayName("모든 카테고리 이름을 가져와야 한다")
+  @DisplayName("모든 카테고리들을 가져와야 한다")
   public void should_getAllName_when_getAllCategoryName() throws ClassNotFoundException {
     CategoryRepository dao = new CategoryRepository();
-    List<String> list = dao.getAllCategoryName();
-    assertThat(list.size()).isEqualTo(3);
+    Map<Long, String> allCategory = dao.getAllCategory();
+    assertThat(allCategory.size()).isEqualTo(3);
   }
 }
