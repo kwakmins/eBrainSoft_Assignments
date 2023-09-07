@@ -1,5 +1,6 @@
 <%@ page import="com.domain.board.dao.BoardRepository" %>
-<%@ page import="java.time.LocalDateTime" %><%--
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.io.PrintWriter" %><%--
   Created by IntelliJ IDEA.
   User: alstj
   Date: 2023-09-07
@@ -26,9 +27,16 @@
     board.setUpdatedAt(LocalDateTime.now());
     board.setViewCount(0);
     if (!boardRepository.createBoard(board)) {
-%>
-<alert>문제가 생겼습니다.</alert>
-<%
+        PrintWriter script = response.getWriter();
+        script.println("<script>");
+        script.println("alter('오류 발생')");
+        script.println("history.back()");
+        script.println("</script>");
+    } else {
+        PrintWriter script = response.getWriter();
+        script.println("<script>");
+        script.println("location.href='boards.jsp'");
+        script.println("</script>");
     }
 %>
 
