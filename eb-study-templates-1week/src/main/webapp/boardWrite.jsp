@@ -19,11 +19,11 @@
         <form method="post" action="boardWriteAction.jsp">
             <div class="row mb-3">
                 <div class="col-sm-4">
-                    <label for="category" class="form-label">카테고리</label>
+                    <label for="categoryId" class="form-label">카테고리</label>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <select class="form-select" id="category" name="category" required>
+                        <select class="form-select" id="categoryId" name="categoryId" required>
                             <option value="" disabled selected>카테고리 선택</option>
                             <%
                                 Map<Long, String> allCategories = new HashMap<>();
