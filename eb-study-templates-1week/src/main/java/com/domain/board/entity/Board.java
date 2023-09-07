@@ -8,6 +8,7 @@ public class Board {
   private Long categoryId;
   private String user;
   private String password;
+  private String title;
   private String content;
   private Integer viewCount;
   private LocalDateTime createdAt;
@@ -75,5 +76,13 @@ public class Board {
 
   public void setCategoryId(Long categoryId) {
     this.categoryId = categoryId;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 }
