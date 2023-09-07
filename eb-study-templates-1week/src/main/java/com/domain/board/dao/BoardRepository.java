@@ -49,6 +49,9 @@ public class BoardRepository {
   }
 
   public boolean createBoard(Board board) {
+    if (!board.valid()) {
+      return false;
+    }
     String sql = "INSERT INTO BOARD VALUES(?,?,?,?,?,?,?,?,?)";
     try {
       pstmt = conn.prepareStatement(sql);

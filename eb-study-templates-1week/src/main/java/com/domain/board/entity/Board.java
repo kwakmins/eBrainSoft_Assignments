@@ -1,6 +1,7 @@
 package com.domain.board.entity;
 
 import java.time.LocalDateTime;
+import java.util.regex.Pattern;
 
 public class Board {
 
@@ -13,6 +14,22 @@ public class Board {
   private Integer viewCount;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
+
+  public Board(Long boardId, Long categoryId, String user, String password, String title,
+      String content, Integer viewCount, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    this.boardId = boardId;
+    this.categoryId = categoryId;
+    this.user = user;
+    this.password = password;
+    this.title = title;
+    this.content = content;
+    this.viewCount = viewCount;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+  }
+
+  public Board() {
+  }
 
   public Long getBoardId() {
     return boardId;
@@ -85,4 +102,24 @@ public class Board {
   public void setTitle(String title) {
     this.title = title;
   }
+
+  public boolean valid() {
+
+    if (user.length() < 3 || user.length() >= 5) {
+      return false;
+    }
+
+    if (!Pattern.matches("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{4,16}$",
+        password)) {
+      return false;
+    }
+    if (title.length() < 4 || title.length() >= 100) {
+      return false;
+    }
+    if (content.length() < 4 || content.length() >= 2000) {
+      return false;
+    }
+    return true;
+  }
+
 }
