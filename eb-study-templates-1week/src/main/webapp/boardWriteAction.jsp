@@ -35,7 +35,7 @@
     } else {
         PrintWriter script = response.getWriter();
         script.println("<script>");
-        script.println("location.href='boards.jsp'");
+        script.println("location.href='boardList.jsp'");
         script.println("</script>");
     }
 %>
