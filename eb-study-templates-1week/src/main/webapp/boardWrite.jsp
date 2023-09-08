@@ -27,12 +27,9 @@
                             <option value="" disabled selected>카테고리 선택</option>
                             <%
                                 Map<Long, String> allCategories = new HashMap<>();
-                                try {
-                                    CategoryRepository categoryRepository = new CategoryRepository();
-                                    allCategories = categoryRepository.getAllCategory();
-                                } catch (ClassNotFoundException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                CategoryRepository categoryRepository = new CategoryRepository();
+                                allCategories = categoryRepository.getAllCategory();
+
                                 for (Long id : allCategories.keySet()) {
                             %>
                             <option value="<%=id%>">
@@ -99,7 +96,7 @@
             </div>
             <div class="row mb-3">
                 <div class="col-sm-11">
-                    <a href="boards.jsp" class="btn btn-danger">취소</a>
+                    <a href="boardList.jsp" class="btn btn-danger">취소</a>
                 </div>
                 <div class="col-sm-1">
                     <button type="submit" class="btn btn-primary" id="save">저장</button>

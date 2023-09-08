@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BoardRepository {
 
@@ -70,5 +72,46 @@ public class BoardRepository {
       return false;
     }
     return true;
+  }
+
+  public List<Board> getList(int pageNumber) {
+    long x = getNextId(); // pstm을 해당 메서드에서 다르게 생성하게 때문에 위치 중요
+    String sql = "SELECT * FROM BOARD WHERE board_id < ? ORDER BY board_id DESC LIMIT 10";
+    List<Board> list = new ArrayList<>();
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setLong(1, x - (pageNumber - 1) * 10L);
+      rs = pstmt.executeQuery();
+      while (rs.next()) {
+        Board board = new Board();
+        board.setBoardId(rs.getLong(1));
+        board.setCategoryId(rs.getLong(2));
+        board.setUser(rs.getString(3));
+        board.setTitle(rs.getString(5));
+        board.setViewCount(rs.getInt(7));
+        board.setCreatedAt(rs.getTimestamp(8).toLocalDateTime());
+        board.setUpdatedAt(rs.getTimestamp(9).toLocalDateTime());
+        list.add(board);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return list;
+  }
+
+  public boolean nextPage(int pageNumber) {
+    long x = getNextId();
+    String sql = "SELECT * FROM BOARD WHERE board_id < ? ORDER BY board_id DESC LIMIT 10";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setLong(1, x - (pageNumber - 1) * 10L);
+      rs = pstmt.executeQuery();
+      if (rs.next()) {
+        return true;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return false;
   }
 }
