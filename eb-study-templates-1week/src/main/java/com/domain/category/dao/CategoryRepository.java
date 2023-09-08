@@ -16,7 +16,7 @@ public class CategoryRepository {
   private ResultSet rs;
   private PropertiesMapper mapper;
 
-  public CategoryRepository() throws ClassNotFoundException {
+  public CategoryRepository() {
     mapper = new PropertiesMapper();
 
     try {
@@ -27,6 +27,9 @@ public class CategoryRepository {
       System.out.println("SQLException: " + e.getMessage());
       System.out.println("SQLState: " + e.getSQLState());
       System.out.println("VendorError: " + e.getErrorCode());
+      throw new RuntimeException();
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -43,5 +46,18 @@ public class CategoryRepository {
       throw new RuntimeException(e);
     }
     return map;
+  }
+
+  public String findNameById(Long id) {
+    String sql = "SELECT category_name FROM CATEGORY WHERE category_id = ?";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setLong(1, id);
+      rs = pstmt.executeQuery();
+      rs.next();
+      return rs.getString(1);
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

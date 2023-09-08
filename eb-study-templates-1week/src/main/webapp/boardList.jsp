@@ -1,6 +1,10 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="com.domain.category.dao.CategoryRepository" %><%--
+<%@ page import="com.domain.category.dao.CategoryRepository" %>
+<%@ page import="com.domain.board.dao.BoardRepository" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.domain.board.entity.Board" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: alstj
   Date: 2023-09-08
@@ -36,12 +40,9 @@
                 <option value="all">모든 카테고리</option>
                 <%
                     Map<Long, String> allCategories = new HashMap<>();
-                    try {
-                        CategoryRepository categoryRepository = new CategoryRepository();
-                        allCategories = categoryRepository.getAllCategory();
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
+                    CategoryRepository categoryRepository = new CategoryRepository();
+                    allCategories = categoryRepository.getAllCategory();
+
                     for (Long id : allCategories.keySet()) {
                 %>
                 <option value="<%=id%>">
@@ -91,6 +92,36 @@
                 </th>
             </tr>
             </thead>
+            <tbody>
+            <%
+                BoardRepository boardRepository = new BoardRepository();
+                List<Board> list = boardRepository.getList(1);
+                for (int i = 0; i < list.size(); i++) {
+            %>
+            <tr>
+                <td>
+                    <%= categoryRepository.findNameById(list.get(i).getCategoryId())%>
+                </td>
+                <td>
+                    <%= list.get(i).getTitle()%>
+                </td>
+                <td>
+                    <%= list.get(i).getUser()%>
+                </td>
+                <td>
+                    <%= list.get(i).getViewCount()%>
+                </td>
+                <td>
+                    <%= list.get(i).getCreatedAt()%>
+                </td>
+                <td>
+                    <%= list.get(i).getUpdatedAt()%>
+                </td>
+            </tr>
+            <%
+                }
+            %>
+            </tbody>
         </table>
     </div>
     <div class="row-sm-11">

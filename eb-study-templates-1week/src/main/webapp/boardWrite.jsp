@@ -27,12 +27,9 @@
                             <option value="" disabled selected>카테고리 선택</option>
                             <%
                                 Map<Long, String> allCategories = new HashMap<>();
-                                try {
-                                    CategoryRepository categoryRepository = new CategoryRepository();
-                                    allCategories = categoryRepository.getAllCategory();
-                                } catch (ClassNotFoundException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                CategoryRepository categoryRepository = new CategoryRepository();
+                                allCategories = categoryRepository.getAllCategory();
+
                                 for (Long id : allCategories.keySet()) {
                             %>
                             <option value="<%=id%>">
