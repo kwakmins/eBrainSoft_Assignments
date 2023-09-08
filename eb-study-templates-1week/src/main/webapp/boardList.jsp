@@ -17,6 +17,16 @@
     <title>웹 게시판</title>
 </head>
 <body>
+<%
+    int pageNumber = 1;
+    if (request.getParameter("pageNumber") != null) {
+        pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        if (pageNumber <= 0) {
+            pageNumber = 1;
+        }
+    }
+%>
+
 
 <p>자유 게시판 - 목록</p>
 
@@ -95,7 +105,7 @@
             <tbody>
             <%
                 BoardRepository boardRepository = new BoardRepository();
-                List<Board> list = boardRepository.getList(1);
+                List<Board> list = boardRepository.getList(pageNumber);
                 for (int i = 0; i < list.size(); i++) {
             %>
             <tr>
@@ -123,6 +133,26 @@
             %>
             </tbody>
         </table>
+
+    </div>
+    <div class="row-sm-1">
+        <a href="boardList.jsp?pageNumber=<%=pageNumber-10%>"
+           class="btn btn-success btn-arraw-left"> << </a>
+        <a href="boardList.jsp?pageNumber=<%=pageNumber-1%>"
+           class="btn btn-success btn-arraw-left"> < </a>
+        <%
+            int parsePage = 10 * (pageNumber / 10);
+            for (int i = parsePage + 1; i <= parsePage + 10; i++) {
+        %>
+        <a href="boardList.jsp?pageNumber=<%=i%>"><%=i%>
+        </a>
+        <%
+            }
+        %>
+        <a href="boardList.jsp?pageNumber=<%=pageNumber+1%>"
+           class="btn btn-success btn-arraw-right"> > </a>
+        <a href="boardList.jsp?pageNumber=<%=pageNumber+10%>"
+           class="btn btn-success btn-arraw-right"> >> </a>
     </div>
     <div class="row-sm-11">
         <a href="boardWrite.jsp" class="btn btn-primary" style="float: right">등록</a>

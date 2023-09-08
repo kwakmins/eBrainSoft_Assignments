@@ -76,7 +76,7 @@ public class BoardRepository {
 
   public List<Board> getList(int pageNumber) {
     long x = getNextId(); // pstm을 해당 메서드에서 다르게 생성하게 때문에 위치 중요
-    String sql = "SELECT board_id, category_id, user, password, title, content, view_count, created_at, updated_at FROM BOARD WHERE board_id < ? ORDER BY board_id DESC LIMIT 10";
+    String sql = "SELECT * FROM BOARD WHERE board_id < ? ORDER BY board_id DESC LIMIT 10";
     List<Board> list = new ArrayList<>();
     try {
       pstmt = conn.prepareStatement(sql);
@@ -97,5 +97,21 @@ public class BoardRepository {
       e.printStackTrace();
     }
     return list;
+  }
+
+  public boolean nextPage(int pageNumber) {
+    long x = getNextId();
+    String sql = "SELECT * FROM BOARD WHERE board_id < ? ORDER BY board_id DESC LIMIT 10";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setLong(1, x - (pageNumber - 1) * 10L);
+      rs = pstmt.executeQuery();
+      if (rs.next()) {
+        return true;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return false;
   }
 }
