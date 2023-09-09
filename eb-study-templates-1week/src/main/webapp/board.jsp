@@ -74,7 +74,7 @@
                 }
             %>
         </div>
-        <form method="post" action="boardAction.jsp" class="row mt-3">
+        <form method="post" action="commentAction.jsp?boardId=<%= boardId%>" class="row mt-3">
             <div class="col-md-11">
                 <label for="content"></label>
                 <input type="text" class="form-control" placeholder="댓글을 입력해 주세요" id="content"
