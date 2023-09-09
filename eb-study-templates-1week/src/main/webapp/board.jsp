@@ -58,7 +58,7 @@
             </p>
         </div>
     </div>
-    <div class="row mt-2" style="background-color: #dddddd">
+    <div class="row mt-4" style="background-color: #dddddd">
         <div class="col-md-12">
             <%
                 List<Comment> commentList = commentRepository.findAllByBoardId(boardId);
@@ -74,6 +74,16 @@
                 }
             %>
         </div>
+        <form method="post" action="boardAction.jsp" class="row mt-3">
+            <div class="col-md-11">
+                <label for="content"></label>
+                <input type="text" class="form-control" placeholder="댓글을 입력해 주세요" id="content"
+                       name="content" minlength="1" required>
+            </div>
+            <div class="col-md-1 text-right">
+                <button type="submit" class="btn btn-primary" id="save">등록</button>
+            </div>
+        </form>
     </div>
 </div>
 
