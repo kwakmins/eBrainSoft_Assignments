@@ -1,6 +1,9 @@
 <%@ page import="com.domain.board.entity.Board" %>
 <%@ page import="com.domain.board.dao.BoardRepository" %>
-<%@ page import="com.domain.category.dao.CategoryRepository" %><%--
+<%@ page import="com.domain.category.dao.CategoryRepository" %>
+<%@ page import="com.domain.comment.dao.CommentRepository" %>
+<%@ page import="com.domain.comment.entity.Comment" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: alstj
   Date: 2023-09-08
@@ -17,6 +20,7 @@
     long boardId = Long.parseLong(request.getParameter("id"));
     BoardRepository boardRepository = new BoardRepository();
     CategoryRepository categoryRepository = new CategoryRepository();
+    CommentRepository commentRepository = new CommentRepository();
     Board board = boardRepository.findOne(boardId);
 
     boardRepository.plusViewCount(boardId);
@@ -24,7 +28,6 @@
 <div class="container mt-5">
     게시판 - 보기
 
-    <!-- 두번째 줄: 이름, 등록일시, 수정일시 -->
     <div class="row mt-3">
         <div class="col-md-6">
             <h6><%=board.getUser()%>
@@ -53,6 +56,23 @@
         <div class="col-md-12">
             <p><%=board.getContent()%>
             </p>
+        </div>
+    </div>
+    <div class="row mt-2" style="background-color: #dddddd">
+        <div class="col-md-12">
+            <%
+                List<Comment> commentList = commentRepository.findAllByBoardId(boardId);
+                for (Comment comment : commentList) {
+            %>
+            <p><%= comment.getDateTime()%>
+            </p>
+            <p>
+                <%= comment.getContent()%>
+            </p>
+            <hr>
+            <%
+                }
+            %>
         </div>
     </div>
 </div>
