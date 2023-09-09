@@ -8,6 +8,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    request.setCharacterEncoding("UTF-8");
+%>
 <jsp:useBean id="board" class="com.domain.board.entity.Board" scope="page"/>
 <jsp:setProperty name="board" property="categoryId"/>
 <jsp:setProperty name="board" property="user"/>
