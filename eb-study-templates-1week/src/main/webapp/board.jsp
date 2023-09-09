@@ -1,6 +1,9 @@
 <%@ page import="com.domain.board.entity.Board" %>
 <%@ page import="com.domain.board.dao.BoardRepository" %>
-<%@ page import="com.domain.category.dao.CategoryRepository" %><%--
+<%@ page import="com.domain.category.dao.CategoryRepository" %>
+<%@ page import="com.domain.comment.dao.CommentRepository" %>
+<%@ page import="com.domain.comment.entity.Comment" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: alstj
   Date: 2023-09-08
@@ -17,6 +20,7 @@
     long boardId = Long.parseLong(request.getParameter("id"));
     BoardRepository boardRepository = new BoardRepository();
     CategoryRepository categoryRepository = new CategoryRepository();
+    CommentRepository commentRepository = new CommentRepository();
     Board board = boardRepository.findOne(boardId);
 
     boardRepository.plusViewCount(boardId);
@@ -24,7 +28,6 @@
 <div class="container mt-5">
     게시판 - 보기
 
-    <!-- 두번째 줄: 이름, 등록일시, 수정일시 -->
     <div class="row mt-3">
         <div class="col-md-6">
             <h6><%=board.getUser()%>
@@ -54,6 +57,33 @@
             <p><%=board.getContent()%>
             </p>
         </div>
+    </div>
+    <div class="row mt-4" style="background-color: #dddddd">
+        <div class="col-md-12">
+            <%
+                List<Comment> commentList = commentRepository.findAllByBoardId(boardId);
+                for (Comment comment : commentList) {
+            %>
+            <p><%= comment.getDateTime()%>
+            </p>
+            <p>
+                <%= comment.getContent()%>
+            </p>
+            <hr>
+            <%
+                }
+            %>
+        </div>
+        <form method="post" action="commentAction.jsp?boardId=<%= boardId%>" class="row mt-3">
+            <div class="col-md-11">
+                <label for="content"></label>
+                <input type="text" class="form-control" placeholder="댓글을 입력해 주세요" id="content"
+                       name="content" minlength="1" required>
+            </div>
+            <div class="col-md-1 text-right">
+                <button type="submit" class="btn btn-primary" id="save">등록</button>
+            </div>
+        </form>
     </div>
 </div>
 
