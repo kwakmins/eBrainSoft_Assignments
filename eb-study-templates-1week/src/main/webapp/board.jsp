@@ -18,6 +18,8 @@
     BoardRepository boardRepository = new BoardRepository();
     CategoryRepository categoryRepository = new CategoryRepository();
     Board board = boardRepository.findOne(boardId);
+
+    boardRepository.plusViewCount(boardId);
 %>
 <div class="container mt-5">
     게시판 - 보기

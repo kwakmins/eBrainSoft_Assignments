@@ -139,4 +139,15 @@ public class BoardRepository {
     }
     return null;
   }
+
+  public void plusViewCount(Long boardId) {
+    String sql = "UPDATE BOARD SET view_count = view_count+1 WHERE board_id = ?";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setLong(1, boardId);
+      pstmt.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
 }
