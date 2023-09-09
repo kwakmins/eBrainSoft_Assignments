@@ -113,7 +113,9 @@
                     <%= categoryRepository.findNameById(list.get(i).getCategoryId())%>
                 </td>
                 <td>
-                    <%= list.get(i).getTitle()%>
+                    <a href="board.jsp?id=<%=list.get(i)
+                        .getBoardId()%>"><%= list.get(i).getTitle()%>
+                    </a>
                 </td>
                 <td>
                     <%= list.get(i).getUser()%>
