@@ -114,4 +114,40 @@ public class BoardRepository {
     }
     return false;
   }
+
+  public Board findOne(long boardId) {
+    String sql = "SELECT * FROM BOARD WHERE board_id=?";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setLong(1, boardId);
+      rs = pstmt.executeQuery();
+      if (rs.next()) {
+        Board board = new Board();
+        board.setBoardId(rs.getLong(1));
+        board.setCategoryId(rs.getLong(2));
+        board.setUser(rs.getString(3));
+        board.setPassword(rs.getString(4));
+        board.setTitle(rs.getString(5));
+        board.setContent(rs.getString(6));
+        board.setViewCount(rs.getInt(7));
+        board.setCreatedAt(rs.getTimestamp(8).toLocalDateTime());
+        board.setUpdatedAt(rs.getTimestamp(9).toLocalDateTime());
+        return board;
+      }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+    return null;
+  }
+
+  public void plusViewCount(Long boardId) {
+    String sql = "UPDATE BOARD SET view_count = view_count+1 WHERE board_id = ?";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setLong(1, boardId);
+      pstmt.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
 }

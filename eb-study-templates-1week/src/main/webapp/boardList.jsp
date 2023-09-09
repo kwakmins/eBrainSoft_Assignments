@@ -113,7 +113,10 @@
                     <%= categoryRepository.findNameById(list.get(i).getCategoryId())%>
                 </td>
                 <td>
-                    <%= list.get(i).getTitle()%>
+                    <a href="board.jsp?id=<%=list.get(i)
+                        .getBoardId()%>"><%= list.get(i).getTitle().length() < 80 ? list.get(i)
+                            .getTitle() : list.get(i).getTitle().substring(80) + "..."%>
+                    </a>
                 </td>
                 <td>
                     <%= list.get(i).getUser()%>
