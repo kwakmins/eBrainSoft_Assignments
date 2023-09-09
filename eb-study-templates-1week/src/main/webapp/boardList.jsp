@@ -114,7 +114,8 @@
                 </td>
                 <td>
                     <a href="board.jsp?id=<%=list.get(i)
-                        .getBoardId()%>"><%= list.get(i).getTitle()%>
+                        .getBoardId()%>"><%= list.get(i).getTitle().length() < 80 ? list.get(i)
+                            .getTitle() : list.get(i).getTitle().substring(80) + "..."%>
                     </a>
                 </td>
                 <td>
