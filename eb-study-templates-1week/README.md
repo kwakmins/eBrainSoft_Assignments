@@ -1,16 +1,1 @@
-
-# 사전 준비
-
-## JDK 11 설치
-
-## Docker Desktop 설치
-https://www.docker.com/products/docker-desktop/
-
-## Apache Tomcat 설치
-https://tomcat.apache.org/download-90.cgi
-
-## Docker Compose 실행 - MySql
-``` 
-cd help
-docker-compose up -d
-```
+![screencapture-notion-so-EBrainSoft-8-a0632661023942e78d9cdb159a20581b-2023-09-12-22_57_52](https://github.com/kawkmin/eBrainSoft_Assignments/assets/86940335/9cb56c79-eccf-46ed-84cf-da6890dea4c3)
