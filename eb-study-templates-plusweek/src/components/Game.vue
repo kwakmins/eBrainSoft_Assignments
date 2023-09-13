@@ -1,8 +1,8 @@
 <template>
   <div>
-    <button @click="gameStart">reStart game</button>
-    <router-link to="/"><button>HOME</button></router-link>
-    <button @click="pullOutWinBall">pull out Ball</button>
+    <v-btn @click="gameStart">reStart game</v-btn>
+    <router-link to="/"><v-btn>HOME</v-btn></router-link>
+    <v-btn @click="pullOutWinBall">pull out Ball</v-btn>
     <h1 style="color: red">{{ winBalls }}</h1>
   </div>
   <div class="players" v-for="(player, index) in players" :key="index">
