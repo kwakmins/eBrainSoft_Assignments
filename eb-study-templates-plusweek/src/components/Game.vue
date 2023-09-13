@@ -37,6 +37,7 @@ export default {
       playerEachCnt: 5,
       //-----------------*
 
+      // 변수
       // 당첨된 숫자들
       winBalls: [],
       // 플레이어들의 숫자들
@@ -61,6 +62,7 @@ export default {
       this.winBalls = [];
       this.players = [];
       this.tempBalls = [];
+      this.iter = 0;
       this.getShuffledNumbers(
         // 처음 플레이어 공을 나누는데 사용
         Array.from(
