@@ -4,7 +4,12 @@
     <router-link to="/"><v-btn style="left: 400px">HOME</v-btn></router-link>
   </div>
   <div>
-    <v-btn @click="pullOutWinBall">pull out Ball</v-btn>
+    <v-btn v-if="continue" @click="pullOutWinBall">pull out Ball</v-btn>
+    <h3 v-else style="color: green">
+      &nbsp;&nbsp;Player{{ winnerNumber }}의 승리!
+    </h3>
+  </div>
+  <div>
     <span v-for="(winBall, index) in winBalls" :key="index" style="color: red">
       &nbsp;{{ winBall }}
     </span>
@@ -12,12 +17,15 @@
   <div class="players" v-for="(player, index) in players" :key="index">
     <span style="font-size: 24px">
       &nbsp;&nbsp;player{{ index + 1 }} =
-      <span v-for="number in player" :key="i">
-        <span v-if="winBalls.includes(number)" style="color: red"
-          >&nbsp;&nbsp;{{ number }}</span
-        >
-        <span v-else>&nbsp;&nbsp;{{ number }}</span>
+      <span v-for="ball in player.balls" :key="i">
+        <span v-if="winBalls.includes(ball)" style="color: red"
+          >&nbsp;&nbsp;{{ ball }}
+        </span>
+        <span v-else>&nbsp;&nbsp;{{ ball }}</span>
       </span>
+    </span>
+    <span v-if="player.winBallCnt === playerEachCnt" style="color: chartreuse"
+      >&nbsp;&nbsp;WIN
     </span>
   </div>
 </template>
@@ -46,6 +54,10 @@ export default {
       tempBalls: [],
       // 당첨 공의 순서
       iter: 0,
+      // 게임이 끝났는지 확인
+      continue: true,
+      // 게임 승리자 번호
+      winnerNumber: 0,
     };
   },
   methods: {
@@ -63,13 +75,15 @@ export default {
       this.players = [];
       this.tempBalls = [];
       this.iter = 0;
-      this.getShuffledNumbers(
-        // 처음 플레이어 공을 나누는데 사용
-        Array.from(
-          { length: this.endNumber - this.startNumber },
-          (_, index) => this.startNumber + index
-        )
-      );
+      this.continue = true;
+      (this.winnerNumber = 0),
+        this.getShuffledNumbers(
+          // 처음 플레이어 공을 나누는데 사용
+          Array.from(
+            { length: this.endNumber - this.startNumber },
+            (_, index) => this.startNumber + index
+          )
+        );
       this.generateBalls();
       this.getShuffledNumbers(
         // 당첨되는 순서의 배열을 갖기 위해 다시 재배열
@@ -100,9 +114,12 @@ export default {
         i < this.playerCnt * this.playerEachCnt;
         i += this.playerEachCnt
       ) {
-        this.players.push(
-          this.tempBalls.slice(i, i + this.playerEachCnt).sort((a, b) => a - b)
-        );
+        this.players.push({
+          balls: this.tempBalls
+            .slice(i, i + this.playerEachCnt)
+            .sort((a, b) => a - b),
+          winBallCnt: 0,
+        });
       }
     },
     /**
@@ -110,6 +127,17 @@ export default {
      */
     pullOutWinBall() {
       this.winBalls.push(this.tempBalls[this.iter]);
+      for (let i = 0; i < this.players.length; i++) {
+        for (let j = 0; j < this.players[i].balls.length; j++) {
+          if (this.players[i].balls[j] === this.tempBalls[this.iter]) {
+            this.players[i].winBallCnt += 1;
+            if (this.players[i].winBallCnt === this.playerEachCnt) {
+              this.continue = false;
+              this.winnerNumber = i + 1;
+            }
+          }
+        }
+      }
       this.iter = this.iter + 1;
     },
   },
