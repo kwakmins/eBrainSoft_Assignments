@@ -107,7 +107,4 @@ body {
 .btn-6 span:hover:after {
   width: 100%;
 }
-button {
-  margin: 200px;
-}
 </style>

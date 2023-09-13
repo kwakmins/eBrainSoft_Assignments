@@ -1,7 +1,9 @@
 <template>
   <div>
     <v-btn @click="gameStart">reStart game</v-btn>
-    <router-link to="/"><v-btn>HOME</v-btn></router-link>
+    <router-link to="/"><v-btn style="left: 400px">HOME</v-btn></router-link>
+  </div>
+  <div>
     <v-btn @click="pullOutWinBall">pull out Ball</v-btn>
     <h1 style="color: red">{{ winBalls }}</h1>
   </div>
@@ -102,6 +104,9 @@ export default {
 };
 </script>
 <style>
+.v-btn {
+  margin: 10px;
+}
 .players {
   margin-bottom: 10px;
   margin: 0px;
