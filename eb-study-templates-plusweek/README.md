@@ -1,24 +1,30 @@
-# eb-study-templates-plusweek
+# 🎰숫자 뽑기 게임
 
-## Project setup
-```
-npm install
-```
+## 🚀 기능 요구 사항
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+`1 ~ 40` 숫자에서 서로 중복없이 `5`개의 숫자를 가지는 플레이어가 `3`명 있다.
+`1 ~ 40` 숫자를 `button`을 통해 중복없이 하나를 뽑아서, 한 플레이어가 모든 숫자가 뽑히면 승리한다.
+게임을 재시작을 하거나, 메인 화면으로 돌아갈 수 있다.
 
-### Compiles and minifies for production
-```
-npm run build
-```
+---
 
-### Lints and fixes files
-```
-npm run lint
-```
+## ✨ 기능 목록
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 메인
+
+- [x] 게임을 시작하는 화면으로 가는 버튼 생성
+
+### 게임
+
+- [x] 게임을 재시작 하는 버튼 생성
+- [x] 메인 화면으로 돌아가는 버튼 생성
+- [x] 모든 플레이어들의 숫자들 출력
+- [x] 당첨된 숫자를 뽑는 버튼 생성 및 숫자 출력
+- [x] 당첨된 숫자를 가진 플레이어의 당첨된 숫자에 표시
+- [x] 한 플레이어가 승리 후, 승리 표시
+
+---
+
+## ❌ 예외 상황
+
+- [x] 플레이어가 승리 한 후, 숫자 뽑기 버튼 클릭할 때
