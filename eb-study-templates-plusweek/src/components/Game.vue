@@ -5,10 +5,20 @@
   </div>
   <div>
     <v-btn @click="pullOutWinBall">pull out Ball</v-btn>
-    <h1 style="color: red">{{ winBalls }}</h1>
+    <span v-for="(winBall, index) in winBalls" :key="index" style="color: red">
+      &nbsp;{{ winBall }}
+    </span>
   </div>
   <div class="players" v-for="(player, index) in players" :key="index">
-    <h1>&nbsp;&nbsp;&nbsp;player{{ index + 1 }} = {{ player }}</h1>
+    <span style="font-size: 24px">
+      &nbsp;&nbsp;player{{ index + 1 }} =
+      <span v-for="number in player" :key="i">
+        <span v-if="winBalls.includes(number)" style="color: red"
+          >&nbsp;&nbsp;{{ number }}</span
+        >
+        <span v-else>&nbsp;&nbsp;{{ number }}</span>
+      </span>
+    </span>
   </div>
 </template>
 
