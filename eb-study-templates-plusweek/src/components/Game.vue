@@ -1,0 +1,104 @@
+<template>
+  <div class="main">
+    <button @click="gameStart">reStart game</button>
+    <router-link to="/"><button>HOME</button></router-link>
+  </div>
+  <div class="players" v-for="(player, index) in players" :key="index">
+    <h1>&nbsp;&nbsp;&nbsp;player{{ index + 1 }} = {{ player }}</h1>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      // 상수
+      //-----------------*
+      // 숫자의 범위
+      startNumber: 1,
+      endNumber: 41,
+      // 플레이어 수
+      playerCnt: 3,
+      // 플레이어 당 갖는 숫자
+      playerEachCnt: 5,
+      //-----------------*
+
+      // 당첨된 숫자들
+      winBalls: [],
+      // 플레이어들의 숫자들
+      players: [],
+      // 임시로 섞인 숫자들
+      tempBalls: [],
+      // 당첨 공의 순서
+      iter: 0,
+    };
+  },
+  methods: {
+    /**
+     * 게임 시작
+     */
+    gameStart() {
+      this.init();
+    },
+    /**
+     * 게임이 시작된 후, 초기값 설정
+     */
+    init() {
+      this.winBalls = [];
+      this.players = [];
+      this.tempBalls = [];
+      this.getShuffledNumbers(
+        // 처음 플레이어 공을 나누는데 사용
+        Array.from(
+          { length: this.endNumber - this.startNumber },
+          (_, index) => this.startNumber + index
+        )
+      );
+      this.generateBalls();
+      this.getShuffledNumbers(
+        // 당첨되는 순서의 배열을 갖기 위해 다시 재배열
+        Array.from(
+          { length: this.endNumber - this.startNumber },
+          (_, index) => this.startNumber + index
+        )
+      );
+    },
+
+    /**
+     * 배열 섞기
+     * @param {범위의 숫자 배열} arr
+     */
+    getShuffledNumbers(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1) + 1);
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      this.tempBalls = arr;
+    },
+    /**
+     * 정해진 플레이어 수 만큼 플레이어들에게 정해진 만큼의 숫자 할당
+     */
+    generateBalls() {
+      for (
+        let i = 0;
+        i < this.playerCnt * this.playerEachCnt;
+        i += this.playerEachCnt
+      ) {
+        this.players.push(
+          this.tempBalls.slice(i, i + this.playerEachCnt).sort((a, b) => a - b)
+        );
+      }
+    },
+  },
+};
+</script>
+<style>
+.players {
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+.main {
+  margin-bottom: 10px;
+}
+</style>
