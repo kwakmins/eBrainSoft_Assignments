@@ -1,7 +1,9 @@
 <template>
-  <div class="main">
+  <div>
     <button @click="gameStart">reStart game</button>
     <router-link to="/"><button>HOME</button></router-link>
+    <button @click="pullOutWinBall">pull out Ball</button>
+    <h1 style="color: red">{{ winBalls }}</h1>
   </div>
   <div class="players" v-for="(player, index) in players" :key="index">
     <h1>&nbsp;&nbsp;&nbsp;player{{ index + 1 }} = {{ player }}</h1>
@@ -89,16 +91,21 @@ export default {
         );
       }
     },
+    /**
+     * 공 뽑기
+     */
+    pullOutWinBall() {
+      this.winBalls.push(this.tempBalls[this.iter]);
+      this.iter = this.iter + 1;
+    },
   },
 };
 </script>
 <style>
 .players {
   margin-bottom: 10px;
+  margin: 0px;
   border: 1px solid #ccc;
   text-align: left;
-}
-.main {
-  margin-bottom: 10px;
 }
 </style>
