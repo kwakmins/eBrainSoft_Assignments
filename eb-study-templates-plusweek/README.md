@@ -28,3 +28,12 @@
 ## ❌ 예외 상황
 
 - [x] 플레이어가 승리 한 후, 숫자 뽑기 버튼 클릭할 때
+
+---
+## 🟢 구현 화면
+
+![image](https://github.com/kawkmin/eBrainSoft_Assignments/assets/86940335/0f3dd88b-f4d5-4ca8-b234-2e5924e6c093)
+
+## 피드백
+- ### 자식 component를 만들어 객체지향적으로 구현해야 한다. (Player,PlayerBag,WinNumber 등)
+- ### 더 나은 재사용성 및 유연한 코드를 위한 [컴포지션 API](https://ko.vuejs.org/guide/extras/composition-api-faq.html)로 Vue를 개발하는게 좋다.
