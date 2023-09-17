@@ -4,34 +4,38 @@
     <router-link to="/"><v-btn style="left: 400px">HOME</v-btn></router-link>
   </div>
   <div>
-    <v-btn v-if="continue" @click="pullOutWinBall">pull out Ball</v-btn>
-    <h3 v-else style="color: green">
-      &nbsp;&nbsp;Player{{ winnerNumber }}의 승리!
-    </h3>
-  </div>
-  <div>
     <span v-for="(winBall, index) in winBalls" :key="index" style="color: red">
       &nbsp;{{ winBall }}
     </span>
   </div>
-  <div class="players" v-for="(player, index) in players" :key="index">
-    <span style="font-size: 24px">
-      &nbsp;&nbsp;player{{ index + 1 }} =
-      <span v-for="ball in player.balls" :key="i">
-        <span v-if="winBalls.includes(ball)" style="color: red"
-          >&nbsp;&nbsp;{{ ball }}
-        </span>
-        <span v-else>&nbsp;&nbsp;{{ ball }}</span>
-      </span>
-    </span>
-    <span v-if="player.winBallCnt === playerEachCnt" style="color: chartreuse"
-      >&nbsp;&nbsp;WIN
-    </span>
-  </div>
+  <Player
+    v-for="(player, index) in players"
+    :key="index"
+    :player-index="index"
+    :player="player"
+    :win-balls="winBalls"
+  />
+  <WinBall
+    :player-cnt="playerCnt"
+    :player-each-cnt="playerEachCnt"
+    :win-balls="winBalls"
+    :players="players"
+    :temp-balls="tempBalls"
+    :iter="iter"
+    :continue="continue"
+    :winner-number="winnerNumber"
+    @pullOutWinBall="pullOutWinBall"
+  />
 </template>
 
 <script>
+import Player from './Player.vue';
+import WinBall from './WinBall.vue';
 export default {
+  components: {
+    Player,
+    WinBall,
+  },
   data() {
     return {
       // 상수
@@ -146,11 +150,5 @@ export default {
 <style>
 .v-btn {
   margin: 10px;
-}
-.players {
-  margin-bottom: 10px;
-  margin: 0px;
-  border: 1px solid #ccc;
-  text-align: left;
 }
 </style>
