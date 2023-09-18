@@ -16,5 +16,6 @@
   <mappers>
     <mapper resource="sqlmapper/board_sql.xml"/>
     <mapper resource="sqlmapper/category_sql.xml"/>
+    <mapper resource="sqlmapper/comment_sql.xml"/>
   </mappers>
 </configuration>
