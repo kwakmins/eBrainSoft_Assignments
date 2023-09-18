@@ -26,6 +26,13 @@ dependencies {
 
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+  //롬복
+  compileOnly 'org.projectlombok:lombok:1.18.10'
+  annotationProcessor 'org.projectlombok:lombok:1.18.10'
+  //mySQL DB 드라이버
+  implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
+
 }
 
 test {
