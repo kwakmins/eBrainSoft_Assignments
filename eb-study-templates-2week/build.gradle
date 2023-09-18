@@ -32,7 +32,8 @@ dependencies {
   annotationProcessor 'org.projectlombok:lombok:1.18.10'
   //mySQL DB 드라이버
   implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
-
+  //mybatis
+  implementation 'org.mybatis:mybatis:3.5.11'
 }
 
 test {
