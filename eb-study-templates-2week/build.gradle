@@ -34,6 +34,9 @@ dependencies {
   implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
   //mybatis
   implementation 'org.mybatis:mybatis:3.5.11'
+  //slf4j
+  implementation 'ch.qos.logback:logback-classic:1.4.1'
+  implementation 'org.slf4j:slf4j-api:2.0.3'
 }
 
 test {
