@@ -4,5 +4,14 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ebsoft.ebstudytemplates2week.domain.category.dao.CategoryRepository">
+  <select id="CategoryAllNames" resultType="string">
+    SELECT category_name
+    FROM t_category
+  </select>
 
+  <select id="findByName" parameterType="string" resultType="long">
+    SELECT category_id
+    FROM t_category
+    WHERE category_name = #{name}
+  </select>
 </mapper>
