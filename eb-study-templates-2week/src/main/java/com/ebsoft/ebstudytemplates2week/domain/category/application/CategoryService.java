@@ -1,15 +1,20 @@
 package com.ebsoft.ebstudytemplates2week.domain.category.application;
 
 import com.ebsoft.ebstudytemplates2week.domain.category.dao.CategoryRepository;
+import com.ebsoft.ebstudytemplates2week.domain.category.entity.Category;
+import com.ebsoft.ebstudytemplates2week.global.action.ActionFactory;
 import com.ebsoft.ebstudytemplates2week.global.mybatis.MybatisConfig;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 
-@NoArgsConstructor
 public class CategoryService {
 
+  @Getter
+  private static final CategoryService instance = new CategoryService();
   CategoryRepository categoryRepository;
 
   /**
@@ -45,5 +50,17 @@ public class CategoryService {
     return id;
   }
 
+  public List<Category> getAllCategory() {
+    List<Category> list = new ArrayList<>();
+    SqlSession sqlSession = null;
+    try {
+      sqlSession = MybatisConfig.getSqlSession();
+      categoryRepository = sqlSession.getMapper(CategoryRepository.class);
+      list = categoryRepository.findAll();
+    } finally {
+      Objects.requireNonNull(sqlSession).close();
+    }
+    return list;
+  }
 }
 

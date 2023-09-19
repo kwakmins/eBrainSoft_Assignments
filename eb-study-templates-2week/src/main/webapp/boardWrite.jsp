@@ -1,12 +1,11 @@
-<%@ page import="java.util.Map" %>
-<%@ page import="java.util.HashMap" %>
-<%@ page import="com.ebsoft.ebstudytemplates2week.domain.category.application.CategoryService" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: alstj
   Date: 2023-09-19
   Time: 오전 11:45
   To change this template use File | Settings | File Templates.
 --%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -14,9 +13,6 @@
     <title>웹 게시판</title>
 </head>
 <body>
-<%
-    CategoryService categoryService = new CategoryService(); //피드백 반영 : JSP의 선언문은 맨 위로
-%>
 
 <div class="container">
     <div class="highlight" style="padding-top: 20px;">
@@ -29,15 +25,12 @@
                     <div class="form-group">
                         <select class="form-select" id="categoryId" name="categoryId" required>
                             <option value="" disabled selected>카테고리 선택</option>
-                            <%
-                                for (String s : categoryService.getAllCategoryNames()) {
-                            %>
-                            <%--                            피드백 반영 map 사용 X--%>
-                            <option value="<%=categoryService.getCategoryIdByName(s)%>">
-                                <%=s%>
-                            </option>
-                            <% }
-                            %>
+                            <c:forEach var="category" items="${categoryList}">
+                                <%--                            피드백 반영 map 사용 X--%>
+                                <option value="#{category.categoryid}">
+                                        #{category.categoryName}
+                                </option>
+                            </c:forEach>
                         </select>
                     </div>
                 </div>
