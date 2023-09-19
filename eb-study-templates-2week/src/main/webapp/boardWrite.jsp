@@ -1,10 +1,10 @@
-<%@ page import="com.domain.category.dao.CategoryRepository" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="java.util.HashMap" %><%--
+<%@ page import="java.util.HashMap" %>
+<%@ page import="com.ebsoft.ebstudytemplates2week.domain.category.application.CategoryService" %><%--
   Created by IntelliJ IDEA.
   User: alstj
-  Date: 2023-09-06
-  Time: 오후 2:45
+  Date: 2023-09-19
+  Time: 오전 11:45
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -14,6 +14,10 @@
     <title>웹 게시판</title>
 </head>
 <body>
+<%
+    CategoryService categoryService = new CategoryService(); //피드백 반영 : JSP의 선언문은 맨 위로
+%>
+
 <div class="container">
     <div class="highlight" style="padding-top: 20px;">
         <form method="post" action="boardWriteAction.jsp">
@@ -26,14 +30,11 @@
                         <select class="form-select" id="categoryId" name="categoryId" required>
                             <option value="" disabled selected>카테고리 선택</option>
                             <%
-                                Map<Long, String> allCategories = new HashMap<>();
-                                CategoryRepository categoryRepository = new CategoryRepository();
-                                allCategories = categoryRepository.getAllCategory();
-
-                                for (Long id : allCategories.keySet()) {
+                                for (String s : categoryService.getAllCategoryNames()) {
                             %>
-                            <option value="<%=id%>">
-                                <%=allCategories.get(id)%>
+                            <%--                            피드백 반영 map 사용 X--%>
+                            <option value="<%=categoryService.getCategoryIdByName(s)%>">
+                                <%=s%>
                             </option>
                             <% }
                             %>
@@ -105,7 +106,6 @@
         </form>
     </div>
 </div>
-
 <script>
   document.getElementById('save').addEventListener('click', function () {
     var password = document.getElementById('password').value;
