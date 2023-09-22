@@ -1,6 +1,6 @@
 package com.ebsoft.ebstudytemplates2week.global.action;
 
-import com.ebsoft.ebstudytemplates2week.domain.board.api.action.BoardWriteAction;
+import com.ebsoft.ebstudytemplates2week.domain.board.api.action.BoardWriteForm;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,7 +21,7 @@ public class ActionFactory {
     Action action = null;
 
     if (command.equals("write")) {
-      action = new BoardWriteAction();
+      action = new BoardWriteForm();
     } else {
       log.warn("URL mapping 실패");
     }
