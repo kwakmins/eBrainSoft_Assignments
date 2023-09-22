@@ -17,6 +17,9 @@ public class BoardService {
 
   public void createBoard(Board board) {
     SqlSession sqlSession = null;
+    if (!board.valid()) {
+      throw new IllegalArgumentException();
+    }
     try {
       sqlSession = MybatisConfig.getSqlSession();
       boardRepository = sqlSession.getMapper(BoardRepository.class);
