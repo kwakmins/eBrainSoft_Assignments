@@ -6,7 +6,7 @@
 <mapper namespace="com.ebsoft.ebstudytemplates2week.domain.board.dao.BoardRepository">
   <insert id="create" parameterType="com.ebsoft.ebstudytemplates2week.domain.board.entity.Board">
     INSERT INTO t_board
-    VALUES ( #{boardId}, #{categoryId}, #{user}, #{password}, #{title}
+    VALUES ( #{boardId}, #{categoryId}, #{user}, SHA2(#{password}, 256), #{title}
            , #{content}, #{viewCount}, #{createdAt}, #{updatedAt})
   </insert>
 
