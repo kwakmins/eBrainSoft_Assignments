@@ -16,4 +16,22 @@
     ORDER BY board_id DESC
     LIMIT 1
   </select>
+
+  <resultMap id="board" type="com.ebsoft.ebstudytemplates2week.domain.board.entity.Board">
+    <id property="boardId" column="board_id"/>
+    <result property="categoryId" column="category_id"/>
+    <result property="user" column="user"/>
+    <result property="password" column="password"/>
+    <result property="title" column="title"/>
+    <result property="content" column="content"/>
+    <result property="viewCount" column="view_count"/>
+    <result property="createdAt" column="created_at"/>
+    <result property="updatedAt" column="updated_at"/>
+  </resultMap>
+
+  <select id="getOne" resultMap="board">
+    SELECT *
+    FROM t_board
+    WHERE board_id=#{id}
+  </select>
 </mapper>

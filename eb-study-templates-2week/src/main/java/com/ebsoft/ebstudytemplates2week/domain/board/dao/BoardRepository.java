@@ -10,4 +10,6 @@ public interface BoardRepository {
   public void create(Board board);
 
   public Long nextId();
+
+  Board getOne(Long id);
 }

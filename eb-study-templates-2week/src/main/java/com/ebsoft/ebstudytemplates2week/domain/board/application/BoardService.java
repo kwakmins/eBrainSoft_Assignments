@@ -44,4 +44,17 @@ public class BoardService {
     }
     return nextId;
   }
+
+  public Board getOne(Long id) {
+    Board board;
+    SqlSession sqlSession = null;
+    try {
+      sqlSession = MybatisConfig.getSqlSession();
+      boardRepository = sqlSession.getMapper(BoardRepository.class);
+      board = boardRepository.getOne(id);
+    } finally {
+      Objects.requireNonNull(sqlSession).close();
+    }
+    return board;
+  }
 }

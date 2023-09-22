@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 public class Board {
 
   private Long boardId;
-  private Long categoryId;
+  private Long categoryId; //Long 말고 Category로 해야하는데...
   private String user;
   private String password;
   private String title;
