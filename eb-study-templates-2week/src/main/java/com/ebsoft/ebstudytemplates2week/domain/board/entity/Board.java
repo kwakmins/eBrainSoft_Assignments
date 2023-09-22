@@ -1,9 +1,13 @@
 package com.ebsoft.ebstudytemplates2week.domain.board.entity;
 
 import java.time.LocalDateTime;
+import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@Builder
+@ToString
 public class Board {
 
   private Long boardId;

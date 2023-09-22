@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 
 <html>
 <head>
@@ -16,7 +16,7 @@
 
 <div class="container">
     <div class="highlight" style="padding-top: 20px;">
-        <form method="post" action="boardWriteAction.jsp">
+        <form method="post" action="boardWriteAction">
             <div class="row mb-3">
                 <div class="col-sm-4">
                     <label for="categoryId" class="form-label">카테고리</label>
@@ -28,7 +28,7 @@
                             <c:forEach var="category" items="${categoryList}">
                                 <%--                            피드백 반영 map 사용 X--%>
                                 <option value="${category.categoryId}">
-                                        <c:out value="${category.categoryName}"></c:out>
+                                    <c:out value="${category.categoryName}"></c:out>
                                 </option>
                             </c:forEach>
                         </select>
