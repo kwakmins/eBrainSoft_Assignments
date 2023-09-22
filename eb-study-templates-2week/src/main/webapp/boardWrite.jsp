@@ -1,22 +1,22 @@
-<%@ page import="com.domain.category.dao.CategoryRepository" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="java.util.HashMap" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: alstj
-  Date: 2023-09-06
-  Time: 오후 2:45
+  Date: 2023-09-19
+  Time: 오전 11:45
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 
 <html>
 <head>
     <title>웹 게시판</title>
 </head>
 <body>
+
 <div class="container">
     <div class="highlight" style="padding-top: 20px;">
-        <form method="post" action="boardWriteAction.jsp">
+        <form method="post" action="boardWriteAction">
             <div class="row mb-3">
                 <div class="col-sm-4">
                     <label for="categoryId" class="form-label">카테고리</label>
@@ -25,18 +25,12 @@
                     <div class="form-group">
                         <select class="form-select" id="categoryId" name="categoryId" required>
                             <option value="" disabled selected>카테고리 선택</option>
-                            <%
-                                Map<Long, String> allCategories = new HashMap<>();
-                                CategoryRepository categoryRepository = new CategoryRepository();
-                                allCategories = categoryRepository.getAllCategory();
-
-                                for (Long id : allCategories.keySet()) {
-                            %>
-                            <option value="<%=id%>">
-                                <%=allCategories.get(id)%>
-                            </option>
-                            <% }
-                            %>
+                            <c:forEach var="category" items="${categoryList}">
+                                <%--                            피드백 반영 map 사용 X--%>
+                                <option value="${category.categoryId}">
+                                    <c:out value="${category.categoryName}"></c:out>
+                                </option>
+                            </c:forEach>
                         </select>
                     </div>
                 </div>
@@ -105,7 +99,6 @@
         </form>
     </div>
 </div>
-
 <script>
   document.getElementById('save').addEventListener('click', function () {
     var password = document.getElementById('password').value;

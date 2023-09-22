@@ -4,5 +4,16 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ebsoft.ebstudytemplates2week.domain.board.dao.BoardRepository">
+  <insert id="create" parameterType="com.ebsoft.ebstudytemplates2week.domain.board.entity.Board">
+    INSERT INTO t_board
+    VALUES ( #{boardId}, #{categoryId}, #{user}, SHA2(#{password}, 256), #{title}
+           , #{content}, #{viewCount}, #{createdAt}, #{updatedAt})
+  </insert>
 
+  <select id="nextId" resultType="Long">
+    SELECT board_id
+    FROM t_board
+    ORDER BY board_id DESC
+    LIMIT 1
+  </select>
 </mapper>
