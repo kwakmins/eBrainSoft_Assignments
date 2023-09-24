@@ -1,5 +1,6 @@
 package com.ebsoft.ebstudytemplates2week.domain.board.entity;
 
+import com.ebsoft.ebstudytemplates2week.domain.category.entity.Category;
 import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 import lombok.Builder;
@@ -14,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class Board {
 
   private Long boardId;
-  private Long categoryId; //Long 말고 Category로 해야하는데...
+  private Category category;
   private String user;
   private String password;
   private String title;

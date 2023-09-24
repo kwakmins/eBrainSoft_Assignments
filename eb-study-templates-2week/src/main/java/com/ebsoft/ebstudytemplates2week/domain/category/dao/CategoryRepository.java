@@ -20,4 +20,9 @@ public interface CategoryRepository {
    * @return 모든 카테고리
    */
   public List<Category> findAll();
+
+  /**
+   * @return 아이디로 찾은 카테고리
+   */
+  public Category findById(Long id);
 }

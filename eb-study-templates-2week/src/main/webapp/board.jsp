@@ -32,7 +32,7 @@
 
     <div class="row mt-3">
         <div class="col-md-9">
-            <h4>[<c:out value="${board.categoryId}"/>] <c:out value="${board.title}"/>
+            <h4>[<c:out value="${board.category.categoryName}"/>] <c:out value="${board.title}"/>
             </h4>
         </div>
         <div class="col-md-3 text-right">

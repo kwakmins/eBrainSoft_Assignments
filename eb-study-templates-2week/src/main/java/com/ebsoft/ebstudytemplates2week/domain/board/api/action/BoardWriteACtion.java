@@ -4,7 +4,6 @@ import com.ebsoft.ebstudytemplates2week.domain.board.application.BoardService;
 import com.ebsoft.ebstudytemplates2week.domain.board.entity.Board;
 import com.ebsoft.ebstudytemplates2week.domain.category.application.CategoryService;
 import com.ebsoft.ebstudytemplates2week.global.action.Action;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,10 +18,11 @@ public class BoardWriteACtion implements Action {
   public void execute(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     BoardService boardService = new BoardService();
+    CategoryService categoryService = new CategoryService();
 
     Board board = Board.builder()
         .boardId(boardService.getNextId())
-        .categoryId(Long.valueOf(request.getParameter("categoryId")))
+        .category(categoryService.findById(Long.valueOf(request.getParameter("categoryId"))))
         .content(request.getParameter("content"))
         .createdAt(LocalDateTime.now())
         .updatedAt(LocalDateTime.now())

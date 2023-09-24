@@ -15,7 +15,7 @@
     WHERE category_name = #{name}
   </select>
 
-  <resultMap id="category" type="com.ebsoft.ebstudytemplates2week.domain.category.entity.Category" >
+  <resultMap id="category" type="com.ebsoft.ebstudytemplates2week.domain.category.entity.Category">
     <id property="categoryId" column="category_id"/>
     <result property="categoryName" column="category_name"/>
   </resultMap>
@@ -23,5 +23,11 @@
   <select id="findAll" resultMap="category">
     SELECT *
     FROM t_category
+  </select>
+
+  <select id="findById" resultMap="category">
+    SELECT *
+    FROM t_category
+    WHERE category_id = #{id}
   </select>
 </mapper>

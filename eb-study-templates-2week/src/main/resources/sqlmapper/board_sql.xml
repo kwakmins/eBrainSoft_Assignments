@@ -6,7 +6,7 @@
 <mapper namespace="com.ebsoft.ebstudytemplates2week.domain.board.dao.BoardRepository">
   <insert id="create" parameterType="com.ebsoft.ebstudytemplates2week.domain.board.entity.Board">
     INSERT INTO t_board
-    VALUES ( #{boardId}, #{categoryId}, #{user}, SHA2(#{password}, 256), #{title}
+    VALUES ( #{boardId}, #{category.categoryId}, #{user}, SHA2(#{password}, 256), #{title}
            , #{content}, #{viewCount}, #{createdAt}, #{updatedAt})
   </insert>
 
@@ -19,7 +19,6 @@
 
   <resultMap id="board" type="com.ebsoft.ebstudytemplates2week.domain.board.entity.Board">
     <id property="boardId" column="board_id"/>
-    <result property="categoryId" column="category_id"/>
     <result property="user" column="user"/>
     <result property="password" column="password"/>
     <result property="title" column="title"/>
@@ -27,11 +26,18 @@
     <result property="viewCount" column="view_count"/>
     <result property="createdAt" column="created_at"/>
     <result property="updatedAt" column="updated_at"/>
+    <association property="category" column="category_id"
+      javaType="com.ebsoft.ebstudytemplates2week.domain.category.entity.Category">
+      <id property="categoryId" column="category_id"/>
+      <result property="categoryName" column="category_name"/>
+    </association>
   </resultMap>
 
   <select id="getOne" resultMap="board">
-    SELECT *
-    FROM t_board
-    WHERE board_id=#{id}
+    SELECT b.*, c.category_name
+    FROM t_board b
+           JOIN t_category c
+                ON b.category_id = c.category_id
+    WHERE board_id = #{id}
   </select>
 </mapper>
