@@ -1,20 +1,25 @@
 package com.ebsoft.ebstudytemplates2week.domain.board.entity;
 
+import com.ebsoft.ebstudytemplates2week.domain.category.entity.Category;
 import java.time.LocalDateTime;
 import java.util.regex.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Slf4j
 public class Board {
 
   private Long boardId;
-  private Long categoryId;
+  private Category category;
   private String user;
   private String password;
   private String title;
@@ -25,6 +30,7 @@ public class Board {
 
   /**
    * 서버측 검증
+   *
    * @return T or F
    */
   public boolean valid() {

@@ -62,5 +62,18 @@ public class CategoryService {
     }
     return list;
   }
+
+  public Category findById(Long categoryId) {
+    Category category;
+    SqlSession sqlSession = null;
+    try {
+      sqlSession = MybatisConfig.getSqlSession();
+      categoryRepository = sqlSession.getMapper(CategoryRepository.class);
+      category = categoryRepository.findById(categoryId);
+    } finally {
+      Objects.requireNonNull(sqlSession).close();
+    }
+    return category;
+  }
 }
 
