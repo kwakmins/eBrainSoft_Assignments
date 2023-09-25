@@ -1,0 +1,43 @@
+plugins {
+  id 'java'
+  id 'war'
+}
+
+group 'com.ebsoft'
+version '1.0-SNAPSHOT'
+
+repositories {
+  mavenCentral()
+}
+
+ext {
+  junitVersion = '5.9.2'
+}
+
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+tasks.withType(JavaCompile) {
+  options.encoding = 'UTF-8'
+}
+
+dependencies {
+  compileOnly('jakarta.servlet:jakarta.servlet-api:5.0.0')
+
+  testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+  //롬복
+  compileOnly 'org.projectlombok:lombok:1.18.10'
+  annotationProcessor 'org.projectlombok:lombok:1.18.10'
+  //mySQL DB 드라이버
+  implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
+  //mybatis
+  implementation 'org.mybatis:mybatis:3.5.11'
+  //slf4j
+  implementation 'ch.qos.logback:logback-classic:1.4.1'
+  implementation 'org.slf4j:slf4j-api:2.0.3'
+}
+
+test {
+useJUnitPlatform()}
