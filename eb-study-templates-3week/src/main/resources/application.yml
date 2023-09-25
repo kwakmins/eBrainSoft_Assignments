@@ -11,3 +11,7 @@ spring:
     url: jdbc:mysql://localhost:3306/ebrainsoft_study?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ebsoft
     password: ebsoft
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.ebsoft.ebstudytemplates3week.domain
