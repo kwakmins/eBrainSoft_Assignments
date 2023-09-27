@@ -10,4 +10,6 @@ public interface BoardRepository {
   void writeBoard(BoardWriteDto boardWriteDto);
 
   BoardDto findBoardById(Long boardId);
+
+  void addView(Long BoardId);
 }

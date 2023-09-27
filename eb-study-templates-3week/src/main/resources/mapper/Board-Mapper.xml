@@ -35,4 +35,11 @@
     FROM t_board b
     WHERE b.board_id = #{boardId}
   </select>
+
+  <!-- 조회수 증가-->
+  <update id="addView">
+    UPDATE t_board
+    SET view_count = view_count + 1
+    WHERE #{boardId}
+  </update>
 </mapper>

@@ -23,9 +23,11 @@ public class BoardService {
   }
 
   /*
-  id로 게시판 조회
+  id로 게시판 조회 + 조회수 증가
    */
+  @Transactional
   public BoardDto getBoardById(Long boardId) {
+    boardRepository.addView(boardId);
     return boardRepository.findBoardById(boardId);
   }
 }
