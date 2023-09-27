@@ -10,14 +10,14 @@
 
 <div class="container">
   <div class="highlight" style="padding-top: 20px;">
-    <form method="post" action="boardWriteAction">
+    <form th:action th:method="post" th:object="${boardWriteDto}">
       <div class="row mb-3">
         <div class="col-sm-4">
-          <label for="categoryId" class="form-label">카테고리</label>
+          <label for="category" class="form-label">카테고리</label>
         </div>
         <div class="col-sm-4">
           <div class="form-group">
-            <select class="form-select" id="categoryId" name="categoryId" required>
+            <select class="form-select" id="category" th:field="*{categoryId}" required>
               <option value="" disabled selected>카테고리 선택</option>
               <option th:each="category : ${AllCategories}" th:value="${category.categoryId}"
                       th:text="${category.categoryName}"></option>
@@ -31,7 +31,7 @@
         </div>
         <div class="col-sm-4">
           <div class="form-group">
-            <input type="text" class="form-control" id="user" name="user" minlength="3"
+            <input type="text" class="form-control" id="user" th:field="*{user}" minlength="3"
                    maxlength="5" required>
           </div>
         </div>
@@ -42,7 +42,7 @@
         </div>
         <div class="col-sm-3">
           <div class="form-group">
-            <input type="password" class="form-control" id="password" name="password"
+            <input type="password" class="form-control" id="password" th:field="*{password}"
                    placeholder="비밀번호" minlength="4" maxlength="16" required
                    pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{4,16}$">
           </div>
@@ -51,7 +51,7 @@
           <div class="form-group">
             <label for="passwordConfirm"></label>
             <input type="password" class="form-control" id="passwordConfirm"
-                   name="passwordConfirm" placeholder="비밀번호 확인">
+                   th:field="*{passwordConfirm}" placeholder="비밀번호 확인">
           </div>
         </div>
       </div>
@@ -61,7 +61,7 @@
         </div>
         <div class="col-sm-8">
           <div class="form-group">
-            <input type="text" class="form-control" id="title" name="title"
+            <input type="text" class="form-control" id="title" th:field="*{title}"
                    minlength="4" maxlength="99" required>
           </div>
         </div>
@@ -72,7 +72,7 @@
         </div>
         <div class="col-sm-8">
           <div class="form-group">
-                        <textarea class="form-control" id="content" name="content"
+                        <textarea class="form-control" id="content" th:field="*{content}"
                                   style="height: 350px;" minlength="4" maxlength="2000"
                                   required></textarea>
           </div>
@@ -80,7 +80,7 @@
       </div>
       <div class="row mb-3">
         <div class="col-sm-11">
-          <a href="boardList.jsp" class="btn btn-danger">취소</a>
+          <a th:onclick="|location.herf='@{/boardList}'|" class="btn btn-danger">취소</a>
         </div>
         <div class="col-sm-1">
           <button type="submit" class="btn btn-primary" id="save">저장</button>
