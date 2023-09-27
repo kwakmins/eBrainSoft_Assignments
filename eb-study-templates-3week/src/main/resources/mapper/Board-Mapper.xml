@@ -48,4 +48,10 @@
     SELECT COUNT(board_id)
     FROM t_board
   </select>
+
+  <!-- 마지막 게시판 id 값-->
+  <select id="lastBoardId" resultType="Long">
+    SELECT MAX(board_id)
+    FROM t_board
+  </select>
 </mapper>

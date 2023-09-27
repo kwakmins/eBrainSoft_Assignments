@@ -14,4 +14,6 @@ public interface BoardRepository {
   void addView(Long BoardId);
 
   Long totalBoardCnt();
+
+  Long lastBoardId();
 }
