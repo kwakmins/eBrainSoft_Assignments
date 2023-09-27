@@ -1,6 +1,7 @@
 package com.ebsoft.ebstudytemplates3week.domain.board.api;
 
 import com.ebsoft.ebstudytemplates3week.domain.board.application.BoardService;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
 import com.ebsoft.ebstudytemplates3week.domain.category.application.CategoryService;
 import java.time.LocalDateTime;
@@ -11,8 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/board/free")
@@ -37,7 +40,8 @@ public class BoardController {
   작성 폼으로부터, 게시판을 작성한다.
    */
   @PostMapping("/write")
-  public String writeBoard(@Valid @ModelAttribute BoardWriteDto reqDto) {
+  public String writeBoard(@Valid @ModelAttribute BoardWriteDto reqDto,
+      RedirectAttributes redirectAttributes) {
     reqDto.setCreatedTime(LocalDateTime.now());
     reqDto.setUpdatedTime(LocalDateTime.now());
 
@@ -49,6 +53,20 @@ public class BoardController {
     }
     // log.info(reqDto.toString());
     boardService.addBoard(reqDto);
-    return "form/boardWriteForm";
+    Long lastWriteBoardId = boardService.getLastWriteBoardId();
+    redirectAttributes.addAttribute("boardId", lastWriteBoardId);
+    return "redirect:/board/free/view/{boardId}";
+  }
+
+  /*
+  게시판 조회
+   */
+  @GetMapping("/view/{id}")
+  public String viewBoard(@PathVariable("id") Long boardId, Model model) {
+    BoardDto board = boardService.getBoardById(boardId);
+    log.info(boardId.toString());
+    log.info(board.toString());
+    model.addAttribute("board", board);
+    return "form/boardForm";
   }
 }

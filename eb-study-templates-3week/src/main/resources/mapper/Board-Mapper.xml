@@ -11,4 +11,47 @@
            , #{content}, DEFAULT, #{createdTime}, #{updatedTime})
   </insert>
 
+  <!-- id로 게시판 조회-->
+  <resultMap id="board" type="BoardDto">
+    <id property="boardId" column="board_id"/>
+    <result property="user" column="user"/>
+    <result property="password" column="password"/>
+    <result property="title" column="title"/>
+    <result property="content" column="content"/>
+    <result property="viewCount" column="view_count"/>
+    <result property="createdTime" column="created_time"/>
+    <result property="updatedTime" column="updated_time"/>
+    <association property="category" column="category_id" javaType="CategoryDto">
+      <id property="categoryId" column="category_id"/>
+      <result property="categoryName" column="category_name"/>
+    </association>
+  </resultMap>
+
+  <select id="findBoardById" resultMap="board">
+    SELECT b.*,
+           (SELECT c.category_name
+            FROM t_category c
+            WHERE c.category_id = b.category_id) as category_name
+    FROM t_board b
+    WHERE b.board_id = #{boardId}
+  </select>
+
+  <!-- 조회수 증가-->
+  <update id="addView">
+    UPDATE t_board
+    SET view_count = view_count + 1
+    WHERE #{boardId}
+  </update>
+
+  <!-- 게시글 총 합-->
+  <select id="totalBoardCnt" resultType="Long">
+    SELECT COUNT(board_id)
+    FROM t_board
+  </select>
+
+  <!-- 마지막 게시판 id 값-->
+  <select id="lastBoardId" resultType="Long">
+    SELECT MAX(board_id)
+    FROM t_board
+  </select>
 </mapper>
