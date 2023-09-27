@@ -30,4 +30,11 @@ public class BoardService {
     boardRepository.addView(boardId);
     return boardRepository.findBoardById(boardId);
   }
+
+  /*
+  가장 최근에 쓰여진 게시판 id 반환
+   */
+  public Long getLastWriteBoardId() {
+    return boardRepository.lastBoardId();
+  }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/board/free")
@@ -39,7 +40,8 @@ public class BoardController {
   작성 폼으로부터, 게시판을 작성한다.
    */
   @PostMapping("/write")
-  public String writeBoard(@Valid @ModelAttribute BoardWriteDto reqDto) {
+  public String writeBoard(@Valid @ModelAttribute BoardWriteDto reqDto,
+      RedirectAttributes redirectAttributes) {
     reqDto.setCreatedTime(LocalDateTime.now());
     reqDto.setUpdatedTime(LocalDateTime.now());
 
@@ -51,7 +53,9 @@ public class BoardController {
     }
     // log.info(reqDto.toString());
     boardService.addBoard(reqDto);
-    return "form/boardWriteForm";
+    Long lastWriteBoardId = boardService.getLastWriteBoardId();
+    redirectAttributes.addAttribute("boardId", lastWriteBoardId);
+    return "redirect:/board/free/view/{boardId}";
   }
 
   /*
