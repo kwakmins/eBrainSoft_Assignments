@@ -4,4 +4,9 @@
 
 <mapper namespace="com.ebsoft.ebstudytemplates3week.domain.category.dao.CategoryRepository">
 
+  <select id="findAllCategories" resultType="CategoryDto">
+    SELECT category_id   as categoryid,
+           category_name as categoryname
+    FROM t_category
+  </select>
 </mapper>

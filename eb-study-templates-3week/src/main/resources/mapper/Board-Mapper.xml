@@ -4,4 +4,11 @@
 
 <mapper namespace="com.ebsoft.ebstudytemplates3week.domain.board.dao.BoardRepository">
 
+  <!--  게시판 생성-->
+  <insert id="writeBoard" parameterType="BoardWriteDto">
+    INSERT INTO t_board
+    VALUES ( NULL, #{categoryId}, #{user}, SHA2(#{password}, 256), #{title}
+           , #{content}, DEFAULT, #{createdTime}, #{updatedTime})
+  </insert>
+
 </mapper>
