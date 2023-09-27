@@ -1,6 +1,7 @@
 package com.ebsoft.ebstudytemplates3week.domain.board.application;
 
 import com.ebsoft.ebstudytemplates3week.domain.board.dao.BoardRepository;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,4 +22,10 @@ public class BoardService {
     boardRepository.writeBoard(reqDto);
   }
 
+  /*
+  id로 게시판 조회
+   */
+  public BoardDto getBoardById(Long boardId) {
+    return boardRepository.findBoardById(boardId);
+  }
 }
