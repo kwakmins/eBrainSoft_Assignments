@@ -12,4 +12,6 @@ public interface BoardRepository {
   BoardDto findBoardById(Long boardId);
 
   void addView(Long BoardId);
+
+  Long totalBoardCnt();
 }

@@ -42,4 +42,10 @@
     SET view_count = view_count + 1
     WHERE #{boardId}
   </update>
+
+  <!-- 게시글 총 합-->
+  <select id="totalBoardCnt" resultType="Long">
+    SELECT COUNT(board_id)
+    FROM t_board
+  </select>
 </mapper>
