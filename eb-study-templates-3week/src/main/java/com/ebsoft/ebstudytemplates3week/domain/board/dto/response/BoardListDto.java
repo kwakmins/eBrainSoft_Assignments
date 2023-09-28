@@ -3,7 +3,6 @@ package com.ebsoft.ebstudytemplates3week.domain.board.dto.response;
 import com.ebsoft.ebstudytemplates3week.domain.category.dto.CategoryDto;
 import java.time.LocalDateTime;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 public class BoardListDto {
@@ -21,7 +20,6 @@ public class BoardListDto {
   //조회수
   private Integer viewCount;
   //생성 날짜
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime createdTime;
   //업데이트 날짜
   private LocalDateTime updatedTime;

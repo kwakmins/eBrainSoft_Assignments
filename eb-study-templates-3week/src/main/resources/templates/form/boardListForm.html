@@ -80,8 +80,8 @@
         </td>
         <td th:text="${board.user}"/>
         <td th:text="${board.viewCount}"/>
-        <td th:text="${board.createdTime}"/>
-        <td th:text="${board.updatedTime}"/>
+        <td th:text="${#temporals.format(board.createdTime, 'yyyy-MM-dd HH:mm')}"/>
+        <td th:text="${#temporals.format(board.updatedTime, 'yyyy-MM-dd HH:mm')}"/>
       </tr>
       </tbody>
     </table>
