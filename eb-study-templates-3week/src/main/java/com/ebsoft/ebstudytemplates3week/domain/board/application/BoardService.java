@@ -3,6 +3,8 @@ package com.ebsoft.ebstudytemplates3week.domain.board.application;
 import com.ebsoft.ebstudytemplates3week.domain.board.dao.BoardRepository;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.response.BoardListDto;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,5 +38,12 @@ public class BoardService {
    */
   public Long getLastWriteBoardId() {
     return boardRepository.lastBoardId();
+  }
+
+  /*
+  게시판 목록들 반환
+   */
+  public List<BoardListDto> getBoardList() {
+    return boardRepository.findAllBoardToList();
   }
 }

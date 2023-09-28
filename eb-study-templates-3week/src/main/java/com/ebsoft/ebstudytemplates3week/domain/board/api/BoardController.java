@@ -3,8 +3,10 @@ package com.ebsoft.ebstudytemplates3week.domain.board.api;
 import com.ebsoft.ebstudytemplates3week.domain.board.application.BoardService;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.response.BoardListDto;
 import com.ebsoft.ebstudytemplates3week.domain.category.application.CategoryService;
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,5 +70,16 @@ public class BoardController {
     log.info(board.toString());
     model.addAttribute("board", board);
     return "form/boardForm";
+  }
+
+  /*
+  게시판 목록
+   */
+  @GetMapping("/list")
+  public String viewBoardList(Model model) {
+    List<BoardListDto> boardList = boardService.getBoardList();
+    model.addAttribute("boardList", boardList);
+    model.addAttribute("AllCategories", categoryService.getAllCategory());
+    return "form/boardListForm";
   }
 }

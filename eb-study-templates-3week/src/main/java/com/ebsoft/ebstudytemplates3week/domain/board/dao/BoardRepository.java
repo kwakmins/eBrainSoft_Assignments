@@ -2,6 +2,8 @@ package com.ebsoft.ebstudytemplates3week.domain.board.dao;
 
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.response.BoardListDto;
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -16,4 +18,6 @@ public interface BoardRepository {
   Long totalBoardCnt();
 
   Long lastBoardId();
+
+  List<BoardListDto> findAllBoardToList();
 }
