@@ -40,7 +40,7 @@
   <update id="addView">
     UPDATE t_board
     SET view_count = view_count + 1
-    WHERE #{boardId}
+    WHERE board_id = #{boardId}
   </update>
 
   <!-- 게시글 총 합-->
