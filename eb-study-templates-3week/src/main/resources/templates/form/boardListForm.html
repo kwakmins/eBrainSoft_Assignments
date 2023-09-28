@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <title>웹 게시판</title>
 </head>
-<body><p>자유 게시판 - 목록</p>
-
+<body>
+<div class="container">
+  <h3>자유 게시판 - 목록</h3>
+</div>
+<br>
 <div class="container border rounded">
 
   <div class="row align-items-center">
@@ -40,10 +43,9 @@
   </div>
 </div>
 
-<p></p>
-<p></p>
-
+<br>
 <div class="container">
+  <p th:text="|총 ${boardList.size()}건|"/>
   <div class="row">
     <table class="table table-striped" style="text-align: center; border: solid #dddddd">
       <thead>
