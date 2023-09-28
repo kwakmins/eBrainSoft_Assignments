@@ -73,10 +73,10 @@
         <td th:text="${board.category.categoryName}">
         </td>
         <td>
-          <!--       제목의 70자 이후는 ...으로 처리-->
+          <!--       제목의 30자 이후는 ...으로 처리-->
           <a th:href="@{/board/free/view/{boardId}(boardId=${board.boardId})}"
              th:text="${#strings.length(board.title) &gt;
-              70 ? #strings.substring(board.title, 0, 70) + '...' : board.title}"/>
+              30 ? #strings.substring(board.title, 0, 30) + '...' : board.title}"/>
         </td>
         <td th:text="${board.user}"/>
         <td th:text="${board.viewCount}"/>
