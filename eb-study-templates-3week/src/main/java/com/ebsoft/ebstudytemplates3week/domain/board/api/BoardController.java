@@ -5,6 +5,8 @@ import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.response.BoardListDto;
 import com.ebsoft.ebstudytemplates3week.domain.category.application.CategoryService;
+import com.ebsoft.ebstudytemplates3week.domain.comment.application.CommentService;
+import com.ebsoft.ebstudytemplates3week.domain.comment.dto.CommentDto;
 import com.ebsoft.ebstudytemplates3week.global.paging.Pagination;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,6 +31,7 @@ public class BoardController {
 
   private final CategoryService categoryService;
   private final BoardService boardService;
+  private final CommentService commentService;
 
   /*
   게시판을 작성할 때, 랜더링.
@@ -52,11 +55,14 @@ public class BoardController {
     // 비밀번호 확인이 틀린 경우.
     if (!reqDto.getPassword().equals(reqDto.getPasswordConfirm())) {
       throw new IllegalArgumentException();
-      // 프론트단에서 이미 제약조건을 걸었는데,
-      // 다른 방식으로 억지로 값을 넣은 대상에게, 친절하게 bindResult로 담아서 줄 필요가 있을까?
+      // todo 프론트단에서 이미 제약조건을 걸었는데,
+      // todo 다른 방식으로 억지로 값을 넣은 대상에게, 친절하게 bindResult로 담아서 줄 필요가 있을까?
     }
     // log.info(reqDto.toString());
     boardService.addBoard(reqDto);
+
+    //todo id 자동 증분으로 인해, dto에 id가 없어, 마지막에 넣은 값을 얻어, 계산.
+    //todo 그 외 테스트 등에서도 다음과 같이 해야함.
     Long lastWriteBoardId = boardService.getLastWriteBoardId();
     redirectAttributes.addAttribute("boardId", lastWriteBoardId);
     return "redirect:/board/free/view/{boardId}";
@@ -87,5 +93,18 @@ public class BoardController {
     model.addAttribute("pageVo", pagination); // 페이지에 관한 정보
     model.addAttribute("AllCategories", categoryService.getAllCategory()); //카테고리들
     return "form/boardListForm";
+  }
+
+  /*
+  댓글 작성
+  todo 배치: 게시판 로직이랑 분단 vs 같은 url을 사용하는 핸들러 바로 밑 배치
+   */
+  @PostMapping("/view/{id}")
+  public String writeComment(@PathVariable("id") Long boardId,
+      @Valid @ModelAttribute CommentDto reqDto) {
+    reqDto.setBoardId(boardId); // 1:N 관계 , /view/{id} 의 id로 값을 받을 수 있음.
+    reqDto.setCreatedTime(LocalDateTime.now());
+    commentService.addComment(reqDto); // 댓글 추가
+    return "redirect:/board/free/view/" + boardId;
   }
 }
