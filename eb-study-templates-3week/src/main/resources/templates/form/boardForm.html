@@ -13,7 +13,8 @@
       <h6 th:text="${board.user}"/>
     </div>
     <div class="col-md-6 text-right">
-      <h6 th:text="|등록 일시: ${board.createdTime} 수정일시: ${board.updatedTime}|"/>
+      <h6 th:text="|등록 일시: ${#temporals.format(board.createdTime, 'yyyy-MM-dd HH:mm')}
+       수정일시: ${#temporals.format(board.updatedTime, 'yyyy-MM-dd HH:mm')}|"/>
     </div>
   </div>
 
@@ -35,6 +36,11 @@
   <!-- 댓글 입력 란 -->
   <div class="row mt-4" style="background-color: #dddddd">
     <div>
+      <th:block th:each="comment : ${board.getComments()}">
+        <br>
+        <p th:text="${#temporals.format(comment.createdTime, 'yyyy-MM-dd HH:mm')}"/>
+        <p th:text="${comment.content}"/>
+      </th:block>
     </div>
     <form th:action th:method="post" class="row mt-3">
       <div class="col-md-11">

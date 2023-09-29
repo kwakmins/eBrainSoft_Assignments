@@ -74,8 +74,7 @@ public class BoardController {
   @GetMapping("/view/{id}")
   public String viewBoard(@PathVariable("id") Long boardId, Model model) {
     BoardDto board = boardService.getBoardById(boardId);
-    log.info(boardId.toString());
-    log.info(board.toString());
+    log.info("댓글 수 : " + String.valueOf(board.getComments().size()));
     model.addAttribute("board", board);
     return "form/boardForm";
   }
