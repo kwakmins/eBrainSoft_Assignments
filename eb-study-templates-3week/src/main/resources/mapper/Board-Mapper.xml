@@ -40,12 +40,12 @@
   <update id="addView">
     UPDATE t_board
     SET view_count = view_count + 1
-    WHERE #{boardId}
+    WHERE board_id = #{boardId}
   </update>
 
   <!-- 게시글 총 합-->
-  <select id="totalBoardCnt" resultType="Long">
-    SELECT COUNT(board_id)
+  <select id="totalBoardCnt" resultType="int">
+    SELECT COUNT(*)
     FROM t_board
   </select>
 
@@ -53,5 +53,30 @@
   <select id="lastBoardId" resultType="Long">
     SELECT MAX(board_id)
     FROM t_board
+  </select>
+
+  <!-- 게시판 목록으로 조회-->
+  <resultMap id="boardList" type="BoardListDto">
+    <id property="boardId" column="board_id"/>
+    <result property="user" column="user"/>
+    <result property="title" column="title"/>
+    <result property="content" column="content"/>
+    <result property="viewCount" column="view_count"/>
+    <result property="createdTime" column="created_time"/>
+    <result property="updatedTime" column="updated_time"/>
+    <association property="category" column="category_id" javaType="CategoryDto">
+      <id property="categoryId" column="category_id"/>
+      <result property="categoryName" column="category_name"/>
+    </association>
+  </resultMap>
+
+  <select id="findAllBoardToList" parameterType="Pagination" resultMap="boardList">
+    SELECT b.*,
+           (SELECT c.category_name
+            FROM t_category c
+            WHERE c.category_id = b.category_id) as category_name
+    FROM t_board b
+    ORDER BY board_id DESC
+    LIMIT #{rowCount} OFFSET #{offset}
   </select>
 </mapper>

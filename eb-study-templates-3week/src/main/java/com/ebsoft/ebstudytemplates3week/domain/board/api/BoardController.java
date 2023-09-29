@@ -3,8 +3,11 @@ package com.ebsoft.ebstudytemplates3week.domain.board.api;
 import com.ebsoft.ebstudytemplates3week.domain.board.application.BoardService;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.response.BoardListDto;
 import com.ebsoft.ebstudytemplates3week.domain.category.application.CategoryService;
+import com.ebsoft.ebstudytemplates3week.global.paging.Pagination;
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -68,5 +72,20 @@ public class BoardController {
     log.info(board.toString());
     model.addAttribute("board", board);
     return "form/boardForm";
+  }
+
+  /*
+  게시판 목록
+   */
+  @GetMapping("/list")
+  public String viewBoardList(Model model,
+      @RequestParam(defaultValue = "1") int page) {
+    Pagination pagination = new Pagination(boardService.getTotalBoardCnt(), page);
+    List<BoardListDto> boardList = boardService.getBoardList(pagination);
+    model.addAttribute("boardList", boardList); // 게시판들
+    model.addAttribute("page", page); //현재 페이지
+    model.addAttribute("pageVo", pagination); // 페이지에 관한 정보
+    model.addAttribute("AllCategories", categoryService.getAllCategory()); //카테고리들
+    return "form/boardListForm";
   }
 }
