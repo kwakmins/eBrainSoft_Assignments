@@ -1,7 +1,9 @@
 package com.ebsoft.ebstudytemplates3week.domain.board.dto;
 
 import com.ebsoft.ebstudytemplates3week.domain.category.dto.CategoryDto;
+import com.ebsoft.ebstudytemplates3week.domain.comment.dto.CommentDto;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,4 +33,6 @@ public class BoardDto {
   private LocalDateTime createdTime;
   //업데이트 날짜
   private LocalDateTime updatedTime;
+  // 댓글 리스트
+  private List<CommentDto> comments;
 }

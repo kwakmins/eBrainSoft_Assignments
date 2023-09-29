@@ -13,7 +13,8 @@
       <h6 th:text="${board.user}"/>
     </div>
     <div class="col-md-6 text-right">
-      <h6 th:text="|등록 일시: ${board.createdTime} 수정일시: ${board.updatedTime}|"/>
+      <h6 th:text="|등록 일시: ${#temporals.format(board.createdTime, 'yyyy-MM-dd HH:mm')}
+       수정일시: ${#temporals.format(board.updatedTime, 'yyyy-MM-dd HH:mm')}|"/>
     </div>
   </div>
 
@@ -26,23 +27,32 @@
     </div>
   </div>
   <hr>
-
   <div class="row mt-5">
     <div class="col-md-12">
       <p th:text="${board.content}"/>
     </div>
   </div>
+
+  <!-- 댓글 입력 란 -->
   <div class="row mt-4" style="background-color: #dddddd">
-    <div class="col-md-12">
+    <div>
+      <th:block th:each="comment : ${board.getComments()}">
+        <br>
+        <p th:text="${#temporals.format(comment.createdTime, 'yyyy-MM-dd HH:mm')}"/>
+        <p th:text="${comment.content}"/>
+      </th:block>
     </div>
-    <form method="post" action="" class="row mt-3">
+    <form th:action th:method="post" class="row mt-3">
       <div class="col-md-11">
         <label for="content"></label>
-        <input type="text" class="form-control" placeholder="댓글을 입력해 주세요" id="content"
-               name="content" minlength="1" required>
+        <textarea class="form-control" placeholder="댓글을 입력해 주세요" id="content"
+                  name="content" minlength="1" required></textarea>
       </div>
       <div class="col-md-1 text-right">
         <button type="submit" class="btn btn-primary" id="save">등록</button>
+      </div>
+      <div>
+        <br>
       </div>
     </form>
   </div>
