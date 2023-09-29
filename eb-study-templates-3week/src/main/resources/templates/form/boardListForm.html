@@ -45,7 +45,7 @@
 
 <br>
 <div class="container">
-  <p th:text="|총 ${boardList.size()}건|"/>
+  <p th:text="|총 ${pageVo.totalCount}건|"/>
   <div class="row">
     <table class="table table-striped" style="text-align: center; border: solid #dddddd">
       <thead>
@@ -88,7 +88,33 @@
       </tbody>
     </table>
   </div>
+  <div id="pagination">
+    <!-- 맨 처음 페이지로 이동하는 버튼 -->
+    <span th:if="${pageVo.startPage > 1}">
+        <a th:href="@{'/board/free/list?page=1'}" th:text="'처음&emsp;'"></a>
+    </span>
 
+    <!-- 이전 블록으로 이동하는 버튼 -->
+    <span th:if="${pageVo.isPrev == true}">
+    	<a th:href="@{'/board/free/list?page='+${pageVo.startPage - 1}}" th:text="'이전'"></a>
+    </span>
+
+    <!-- 시퀀스 보여주는 값을 변경. -->
+    <span th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}">
+        <a class="div2" th:href="@{'/board/free/list?page='+${pageNum}}"
+           th:text="|&emsp;${pageNum}&emsp;|"></a>
+    </span>
+
+    <!-- 다음 블록으로 이동하는 버튼 -->
+    <span th:if="${pageVo.isNext == true}">
+	<a th:href="@{'/board/free/list?page='+${pageVo.endPage + 1}}" th:text="'다음'"></a>
+    </span>
+
+    <!-- 맨 뒷 페이지로 이동하는 버튼 -->
+    <span th:if="${pageVo.endPage < pageVo.totalPageCount}">
+	<a th:href="@{'/board/free/list?page='+${pageVo.totalPageCount}}" th:text="|&emsp;끝|"></a>
+    </span>
+  </div>
   <div class="row-sm-11">
     <a th:href="@{/board/free/write}" class="btn btn-primary" style="float: right">등록</a>
   </div>

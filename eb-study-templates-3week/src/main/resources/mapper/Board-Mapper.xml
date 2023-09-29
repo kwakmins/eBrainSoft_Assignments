@@ -44,8 +44,8 @@
   </update>
 
   <!-- 게시글 총 합-->
-  <select id="totalBoardCnt" resultType="Long">
-    SELECT COUNT(board_id)
+  <select id="totalBoardCnt" resultType="int">
+    SELECT COUNT(*)
     FROM t_board
   </select>
 
@@ -70,11 +70,13 @@
     </association>
   </resultMap>
 
-  <select id="findAllBoardToList" resultMap="boardList">
+  <select id="findAllBoardToList" parameterType="Pagination" resultMap="boardList">
     SELECT b.*,
            (SELECT c.category_name
             FROM t_category c
             WHERE c.category_id = b.category_id) as category_name
     FROM t_board b
+    ORDER BY board_id DESC
+    LIMIT #{rowCount} OFFSET #{offset}
   </select>
 </mapper>

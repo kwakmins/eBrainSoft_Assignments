@@ -50,9 +50,9 @@ class BoardServiceTest {
   @Transactional
     // 자동 증분 이유 모르겠음.
   void should_save_when_writeBoard() {
-    Long prevBoardCnt = boardRepository.totalBoardCnt(); // 추가 되기 전 게시판 수
+    int prevBoardCnt = boardRepository.totalBoardCnt(); // 추가 되기 전 게시판 수
     boardService.addBoard(globalBoardWriteDto); // 추가
-    Long afterBoardCnt = boardRepository.totalBoardCnt(); // 추가 된 후 게시판 수
+    int afterBoardCnt = boardRepository.totalBoardCnt(); // 추가 된 후 게시판 수
     assertThat(prevBoardCnt + 1L).isEqualTo(afterBoardCnt); // 추가 되기 전 + 1 = 추가 된 후
   }
 

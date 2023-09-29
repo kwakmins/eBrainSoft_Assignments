@@ -3,6 +3,7 @@ package com.ebsoft.ebstudytemplates3week.domain.board.dao;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.response.BoardListDto;
+import com.ebsoft.ebstudytemplates3week.global.paging.Pagination;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,9 +16,9 @@ public interface BoardRepository {
 
   void addView(Long BoardId);
 
-  Long totalBoardCnt();
+  int totalBoardCnt();
 
   Long lastBoardId();
 
-  List<BoardListDto> findAllBoardToList();
+  List<BoardListDto> findAllBoardToList(Pagination pagination);
 }
