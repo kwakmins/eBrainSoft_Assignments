@@ -9,6 +9,8 @@ import com.ebsoft.ebstudytemplates3week.domain.comment.application.CommentServic
 import com.ebsoft.ebstudytemplates3week.domain.comment.dto.CommentDto;
 import com.ebsoft.ebstudytemplates3week.global.paging.Pagination;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -91,6 +93,12 @@ public class BoardController {
     model.addAttribute("page", page); //현재 페이지
     model.addAttribute("pageVo", pagination); // 페이지에 관한 정보
     model.addAttribute("AllCategories", categoryService.getAllCategory()); //카테고리들
+
+    // 검색 관련 Attribute
+    model.addAttribute("presentTime",
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    model.addAttribute("lastOneYearTime",
+        LocalDateTime.now().minusYears(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     return "form/boardListForm";
   }
 

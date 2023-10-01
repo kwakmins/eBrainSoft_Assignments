@@ -9,7 +9,7 @@
   <h3>자유 게시판 - 목록</h3>
 </div>
 <br>
-<div class="container border rounded">
+<div th:action th:method="post" class="container border rounded">
 
   <div class="row align-items-center">
     <div class="col-sm-1">
@@ -17,11 +17,11 @@
     </div>
     <div class="col-sm-4">
       <label for="startDate"></label>
-      <input type="date" id="startDate" name="startDate"
+      <input type="date" id="startDate" name="startDate" th:value="${lastOneYearTime}"
              required>
       ~
       <label for="endDate"></label>
-      <input type="date" id="endDate" name="endDate"
+      <input type="date" id="endDate" name="endDate" th:value="${presentTime}"
              required><br><br>
     </div>
     <div class="col-sm-2">
