@@ -98,11 +98,23 @@ public class BoardController {
     model.addAttribute("pageVo", searchDto.pagination); // 페이지에 관한 정보
     model.addAttribute("AllCategories", categoryService.getAllCategory()); //카테고리들
 
-    // 날짜 default값 부여.
-    model.addAttribute("presentTime",
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-    model.addAttribute("lastOneYearTime",
-        LocalDateTime.now().minusYears(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    // 이전 검색 날짜 값 부여 및 default값 부여
+    model.addAttribute("startDate",
+        searchDto.startDate == null ?
+            LocalDateTime.now().minusYears(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            : searchDto.startDate);
+
+    model.addAttribute("endDate",
+        searchDto.endDate == null ?
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            : searchDto.endDate);
+
+    // 검색 조건 유지를 위한 이전 값 넣기
+    model.addAttribute("prevCategory", searchDto.category); // 검색 카테고리
+    model.addAttribute("prevContent", searchDto.searchContent); // 검색 내용
+
+    // 페이징에서 이전 파라미터들 모두 받기
+    model.addAttribute("prevSearchParam", searchDto.toUrlParm());
     return "form/boardListForm";
   }
 

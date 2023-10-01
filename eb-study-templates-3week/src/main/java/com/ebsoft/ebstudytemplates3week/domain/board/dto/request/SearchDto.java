@@ -16,4 +16,21 @@ public class SearchDto {
   public String searchContent;
   // 페이지
   public Pagination pagination;
+
+  public String toUrlParm() {
+    String temp = "";
+    if (startDate != null) {
+      temp += "&startDate=" + startDate;
+    }
+    if (endDate != null) {
+      temp += "&endDate=" + endDate;
+    }
+    if (category != null) {
+      temp += "&category=" + category;
+    }
+    if (searchContent != null) {
+      temp += "&searchContent=" + searchContent;
+    }
+    return temp;
+  }
 }
