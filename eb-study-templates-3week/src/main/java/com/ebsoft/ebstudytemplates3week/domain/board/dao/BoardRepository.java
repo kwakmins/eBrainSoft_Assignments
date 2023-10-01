@@ -2,6 +2,7 @@ package com.ebsoft.ebstudytemplates3week.domain.board.dao;
 
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.SearchDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.response.BoardListDto;
 import com.ebsoft.ebstudytemplates3week.global.paging.Pagination;
 import java.util.List;
@@ -18,7 +19,11 @@ public interface BoardRepository {
 
   int totalBoardCnt();
 
+  int totalBoardCntBySearch(SearchDto searchDto);
+
   Long lastBoardId();
 
   List<BoardListDto> findAllBoardToList(Pagination pagination);
+
+  List<BoardListDto> findAllBoardToListBySearch(SearchDto searchDto);
 }

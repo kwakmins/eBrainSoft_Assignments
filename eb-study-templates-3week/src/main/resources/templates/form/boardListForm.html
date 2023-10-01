@@ -9,7 +9,7 @@
   <h3>자유 게시판 - 목록</h3>
 </div>
 <br>
-<div class="container border rounded">
+<form th:action th:method="get" class="container border rounded">
 
   <div class="row align-items-center">
     <div class="col-sm-1">
@@ -17,31 +17,32 @@
     </div>
     <div class="col-sm-4">
       <label for="startDate"></label>
-      <input type="date" id="startDate" name="startDate"
+      <input type="date" id="startDate" name="startDate" th:value="${startDate}"
              required>
       ~
       <label for="endDate"></label>
-      <input type="date" id="endDate" name="endDate"
+      <input type="date" id="endDate" name="endDate" th:value="${endDate}"
              required><br><br>
     </div>
     <div class="col-sm-2">
       <select class="form-select" id="category" name="category" required>
-        <option value=0>모든 카테고리</option>
+        <option value="0">모든 카테고리</option>
         <option th:each="category : ${AllCategories}" th:value="${category.categoryId}"
+                th:selected="${category.categoryId} == ${prevCategory}"
                 th:text="${category.categoryName}"></option>
       </select>
     </div>
     <div class="col-sm-4">
       <div class="form-group">
         <input type="text" class="form-control" id="searchContent" name="searchContent"
-               placeholder="검색어를 입력해 주세요.(제목+작성자+내용)" required>
+               placeholder="검색어를 입력해 주세요.(제목+작성자+내용)" th:value="${prevContent}"/>
       </div>
     </div>
     <div class="col-sm-1">
       <button type="submit" class="btn btn-primary" id="search">검색</button>
     </div>
   </div>
-</div>
+</form>
 
 <br>
 <div class="container">
@@ -91,23 +92,25 @@
   <div id="pagination">
     <!-- 맨 처음 페이지로 이동하는 버튼 -->
     <span th:if="${pageVo.startPage > 1}">
-        <a th:href="@{'/board/free/list?page=1'}" th:text="'처음&emsp;'"></a>
+        <a th:href="@{'/board/free/list?page=1'+${prevSearchParam}}" th:text="'처음&emsp;'"></a>
     </span>
 
     <!-- 이전 블록으로 이동하는 버튼 -->
     <span th:if="${pageVo.isPrev == true}">
-    	<a th:href="@{'/board/free/list?page='+${pageVo.startPage - 1}}" th:text="'이전'"></a>
+    	<a th:href="@{'/board/free/list?page='+${pageVo.startPage - 1}+${prevSearchParam}}"
+         th:text="'이전'"></a>
     </span>
 
     <!-- 시퀀스 보여주는 값을 변경. -->
     <span th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}">
-        <a class="div2" th:href="@{'/board/free/list?page='+${pageNum}}"
+        <a class="div2" th:href="@{'/board/free/list?page='+${pageNum}+${prevSearchParam}}"
            th:text="|&emsp;${pageNum}&emsp;|"></a>
     </span>
 
     <!-- 다음 블록으로 이동하는 버튼 -->
     <span th:if="${pageVo.isNext == true}">
-	<a th:href="@{'/board/free/list?page='+${pageVo.endPage + 1}}" th:text="'다음'"></a>
+	<a th:href="@{'/board/free/list?page='+${pageVo.endPage + 1}+${prevSearchParam}}"
+     th:text="'다음'"></a>
     </span>
 
     <!-- 맨 뒷 페이지로 이동하는 버튼 -->

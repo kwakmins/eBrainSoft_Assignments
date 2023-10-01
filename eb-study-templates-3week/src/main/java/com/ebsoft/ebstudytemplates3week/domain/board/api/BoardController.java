@@ -3,12 +3,14 @@ package com.ebsoft.ebstudytemplates3week.domain.board.api;
 import com.ebsoft.ebstudytemplates3week.domain.board.application.BoardService;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.SearchDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.response.BoardListDto;
 import com.ebsoft.ebstudytemplates3week.domain.category.application.CategoryService;
 import com.ebsoft.ebstudytemplates3week.domain.comment.application.CommentService;
 import com.ebsoft.ebstudytemplates3week.domain.comment.dto.CommentDto;
 import com.ebsoft.ebstudytemplates3week.global.paging.Pagination;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -84,13 +86,35 @@ public class BoardController {
    */
   @GetMapping("/list")
   public String viewBoardList(Model model,
-      @RequestParam(defaultValue = "1") int page) {
-    Pagination pagination = new Pagination(boardService.getTotalBoardCnt(), page);
-    List<BoardListDto> boardList = boardService.getBoardList(pagination);
+      @RequestParam(defaultValue = "1") int page,
+      @ModelAttribute SearchDto searchDto) {
+
+    log.info("검색어 : " + searchDto.toString());
+
+    searchDto.setPagination(new Pagination(boardService.getTotalBoardCnt(searchDto), page));
+    List<BoardListDto> boardList = boardService.getBoardList(searchDto);
     model.addAttribute("boardList", boardList); // 게시판들
     model.addAttribute("page", page); //현재 페이지
-    model.addAttribute("pageVo", pagination); // 페이지에 관한 정보
+    model.addAttribute("pageVo", searchDto.pagination); // 페이지에 관한 정보
     model.addAttribute("AllCategories", categoryService.getAllCategory()); //카테고리들
+
+    // 이전 검색 날짜 값 부여 및 default값 부여
+    model.addAttribute("startDate",
+        searchDto.startDate == null ?
+            LocalDateTime.now().minusYears(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            : searchDto.startDate);
+
+    model.addAttribute("endDate",
+        searchDto.endDate == null ?
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            : searchDto.endDate);
+
+    // 검색 조건 유지를 위한 이전 값 넣기
+    model.addAttribute("prevCategory", searchDto.category); // 검색 카테고리
+    model.addAttribute("prevContent", searchDto.searchContent); // 검색 내용
+
+    // 페이징에서 이전 파라미터들 모두 받기
+    model.addAttribute("prevSearchParam", searchDto.toUrlParm());
     return "form/boardListForm";
   }
 
