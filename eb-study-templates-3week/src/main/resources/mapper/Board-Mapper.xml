@@ -64,6 +64,27 @@
     FROM t_board
   </select>
 
+  <!-- 게시글 총 합 (검색) -->
+  <select id="totalBoardCntBySearch" parameterType="SearchDto" resultType="int">
+    SELECT count(*)
+    FROM t_board
+    WHERE 1=1
+    <if test='startDate !=null and !startDate.equals("")'>
+      AND created_time <![CDATA[>=]]> #{startDate}
+    </if>
+    <if test='endDate !=null and !endDate.equals("")'>
+      AND created_time <![CDATA[<=]]> #{endDate}
+    </if>
+    <if test='category !=null and category !=0'>
+      AND category_id = #{category}
+    </if>
+    <if test='searchContent !=null and !searchContent.equals("")'>
+      AND title Like CONCAT('%',#{searchContent},'%')
+      OR user Like CONCAT('%',#{searchContent},'%')
+      OR content Like CONCAT('%',#{searchContent},'%')
+    </if>
+  </select>
+
   <!-- 마지막 게시판 id 값-->
   <select id="lastBoardId" resultType="Long">
     SELECT MAX(board_id)
@@ -85,6 +106,7 @@
     </association>
   </resultMap>
 
+  <!--  검색 X-->
   <select id="findAllBoardToList" parameterType="Pagination" resultMap="boardList">
     SELECT b.*,
            (SELECT c.category_name
@@ -94,4 +116,33 @@
     ORDER BY board_id DESC
     LIMIT #{rowCount} OFFSET #{offset}
   </select>
+
+  <!--  검색 O-->
+  <select id="findAllBoardToListBySearch" parameterType="SearchDto" resultMap="boardList">
+    SELECT b.*,
+    (SELECT c.category_name
+    FROM t_category c
+    WHERE c.category_id = b.category_id) as category_name
+    FROM t_board b
+
+    WHERE 1=1
+    <if test='startDate !=null and !startDate.equals("")'>
+      AND created_time <![CDATA[>=]]> #{startDate}
+    </if>
+    <if test='endDate !=null and !endDate.equals("")'>
+      AND created_time <![CDATA[<=]]> #{endDate}
+    </if>
+    <if test='category !=null and category !=0'>
+      AND category_id = #{category}
+    </if>
+    <if test='searchContent !=null and !searchContent.equals("")'>
+      AND title Like CONCAT('%',#{searchContent},'%')
+      OR user Like CONCAT('%',#{searchContent},'%')
+      OR content Like CONCAT('%',#{searchContent},'%')
+    </if>
+
+    ORDER BY board_id DESC
+    LIMIT #{pagination.rowCount} OFFSET #{pagination.offset}
+  </select>
+
 </mapper>

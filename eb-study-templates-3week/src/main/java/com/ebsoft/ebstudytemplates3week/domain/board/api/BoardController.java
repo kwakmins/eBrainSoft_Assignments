@@ -3,6 +3,7 @@ package com.ebsoft.ebstudytemplates3week.domain.board.api;
 import com.ebsoft.ebstudytemplates3week.domain.board.application.BoardService;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.SearchDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.response.BoardListDto;
 import com.ebsoft.ebstudytemplates3week.domain.category.application.CategoryService;
 import com.ebsoft.ebstudytemplates3week.domain.comment.application.CommentService;
@@ -10,7 +11,6 @@ import com.ebsoft.ebstudytemplates3week.domain.comment.dto.CommentDto;
 import com.ebsoft.ebstudytemplates3week.global.paging.Pagination;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -86,15 +86,19 @@ public class BoardController {
    */
   @GetMapping("/list")
   public String viewBoardList(Model model,
-      @RequestParam(defaultValue = "1") int page) {
-    Pagination pagination = new Pagination(boardService.getTotalBoardCnt(), page);
-    List<BoardListDto> boardList = boardService.getBoardList(pagination);
+      @RequestParam(defaultValue = "1") int page,
+      @ModelAttribute SearchDto searchDto) {
+
+    log.info("검색어 : " + searchDto.toString());
+
+    searchDto.setPagination(new Pagination(boardService.getTotalBoardCnt(searchDto), page));
+    List<BoardListDto> boardList = boardService.getBoardList(searchDto);
     model.addAttribute("boardList", boardList); // 게시판들
     model.addAttribute("page", page); //현재 페이지
-    model.addAttribute("pageVo", pagination); // 페이지에 관한 정보
+    model.addAttribute("pageVo", searchDto.pagination); // 페이지에 관한 정보
     model.addAttribute("AllCategories", categoryService.getAllCategory()); //카테고리들
 
-    // 검색 관련 Attribute
+    // 날짜 default값 부여.
     model.addAttribute("presentTime",
         LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     model.addAttribute("lastOneYearTime",
