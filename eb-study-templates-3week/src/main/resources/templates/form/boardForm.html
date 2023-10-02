@@ -143,10 +143,11 @@
     $.ajax({
       type: `Get`,
       url: '/board/free/checkPwd',
-      data: {'checkPassword': enteredPassword, 'boardId': boardId},
+      data: {'password': enteredPassword, 'boardId': boardId},
       dataType: "text"
     }).done(function (result) {
-      if (result) {
+      var isPasswordMatch = result === "true";
+      if (isPasswordMatch) {
         window.location.href = "/board/free/boardUpdate?boardId=" + boardId;
       } else {
         alert("비밀번호가 다릅니다.")
@@ -169,10 +170,11 @@
     $.ajax({
       type: `Post`,
       url: '/board/free/checkPwd',
-      data: {'checkPassword': enteredPassword, 'boardId': boardId, 'deleteTorF': true},
+      data: {'password': enteredPassword, 'boardId': boardId},
       dataType: "text"
     }).done(function (result) {
-      if (result) {
+      var isPasswordMatch = result === "true";
+      if (isPasswordMatch) {
         alert("삭제 성공!")
         window.location.href = "/board/free/list";
       } else {
