@@ -2,6 +2,7 @@ package com.ebsoft.ebstudytemplates3week.domain.board.api;
 
 import com.ebsoft.ebstudytemplates3week.domain.board.application.BoardService;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardPasswordConfirmDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.SearchDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.response.BoardListDto;
@@ -137,8 +138,10 @@ public class BoardController {
    */
   @ResponseBody
   @GetMapping("/checkPwd")
-  public boolean checkPasswordForUpdate(Long boardId, String checkPassword) {
-    return true;
+  public boolean checkPasswordForUpdate(@ModelAttribute BoardPasswordConfirmDto reqDto) {
+    boolean samePassword = boardService.isSamePassword(reqDto);
+    log.info("수정을 위한 비밀번호 확인 성공 여부 : " + samePassword);
+    return samePassword;
   }
 
   /*
@@ -146,7 +149,9 @@ public class BoardController {
  */
   @ResponseBody
   @PostMapping("/checkPwd")
-  public boolean checkPasswordForDelete(Long boardId, String checkPassword, Boolean deleteTorF) {
-    return true;
+  public boolean checkPasswordForDelete(@ModelAttribute BoardPasswordConfirmDto reqDto) {
+    boolean samePassword = boardService.isSamePassword(reqDto);
+    log.info("수정을 위한 비밀번호 확인 성공 여부 : " + samePassword);
+    return samePassword;
   }
 }

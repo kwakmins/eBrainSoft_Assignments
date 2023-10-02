@@ -2,6 +2,7 @@ package com.ebsoft.ebstudytemplates3week.domain.board.application;
 
 import com.ebsoft.ebstudytemplates3week.domain.board.dao.BoardRepository;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardPasswordConfirmDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.SearchDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.response.BoardListDto;
@@ -68,5 +69,12 @@ public class BoardService {
    */
   public int getTotalBoardCnt(SearchDto searchDto) {
     return boardRepository.totalBoardCntBySearch(searchDto);
+  }
+
+  /*
+  비밀번호가 같은지 확인
+   */
+  public boolean isSamePassword(BoardPasswordConfirmDto boardPasswordConfirmDto) {
+    return boardRepository.passwordConfirm(boardPasswordConfirmDto);
   }
 }

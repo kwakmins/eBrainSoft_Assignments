@@ -145,4 +145,10 @@
     LIMIT #{pagination.rowCount} OFFSET #{pagination.offset}
   </select>
 
+  <select id="passwordConfirm" resultType="boolean" parameterType="BoardPasswordConfirmDto">
+    SELECT IF(password = SHA2(#{password}, 256), 1, 0)
+    FROM t_board
+    WHERE board_id = #{boardId}
+  </select>
+
 </mapper>
