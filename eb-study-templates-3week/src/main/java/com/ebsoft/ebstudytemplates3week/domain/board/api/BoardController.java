@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -129,5 +130,23 @@ public class BoardController {
     reqDto.setCreatedTime(LocalDateTime.now());
     commentService.addComment(reqDto); // 댓글 추가
     return "redirect:/board/free/view/" + boardId;
+  }
+
+  /*
+  비밀번호 확인 (업데이트)
+   */
+  @ResponseBody
+  @GetMapping("/checkPwd")
+  public boolean checkPasswordForUpdate(Long boardId, String checkPassword) {
+    return true;
+  }
+
+  /*
+  비밀번호 확인 후 삭제
+ */
+  @ResponseBody
+  @PostMapping("/checkPwd")
+  public boolean checkPasswordForDelete(Long boardId, String checkPassword, Boolean deleteTorF) {
+    return true;
   }
 }
