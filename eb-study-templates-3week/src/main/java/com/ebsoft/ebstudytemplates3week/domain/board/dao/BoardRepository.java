@@ -32,4 +32,6 @@ public interface BoardRepository {
   Boolean passwordConfirm(BoardPasswordConfirmDto boardPasswordConfirmDto);
 
   void updateBoard(BoardUpdateDto boardUpdateDto);
+
+  void deleteBoard(Long boardId);
 }

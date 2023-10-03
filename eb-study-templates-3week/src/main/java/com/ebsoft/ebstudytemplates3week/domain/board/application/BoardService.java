@@ -94,4 +94,12 @@ id로 게시판 조회 + 조회수 증가 X
   public void updateBoard(BoardUpdateDto reqDto) {
     boardRepository.updateBoard(reqDto);
   }
+
+  /*
+  게시판 삭제
+   */
+  @Transactional
+  public void deleteBoard(Long boardId) {
+    boardRepository.deleteBoard(boardId);
+  }
 }

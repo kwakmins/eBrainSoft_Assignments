@@ -166,7 +166,7 @@
   // 비밀번호 확인 버튼 클릭 시 삭제 동작 수행
   document.getElementById("confirmDeletePassword").addEventListener("click", function () {
     var boardId = $("#boardId").val();
-    var enteredPassword = document.getElementById("editPassword").value;
+    var enteredPassword = document.getElementById("deletePassword").value;
     $.ajax({
       type: `Post`,
       url: '/board/free/checkPwd',

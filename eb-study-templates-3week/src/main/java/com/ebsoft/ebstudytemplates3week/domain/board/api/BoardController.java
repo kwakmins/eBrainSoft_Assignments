@@ -66,7 +66,7 @@ public class BoardController {
     // log.info(reqDto.toString());
     boardService.addBoard(reqDto);
 
-    //todo id 자동 증분으로 인해, dto에 id가 없어, 마지막에 넣은 값을 얻어, 계산. (!!!!히든으로 dto에 넣을 수 있다!!!)
+    //todo id 자동 증분으로 인해, dto에 id가 없어, 마지막에 넣은 값을 얻어, 계산. (!!!addBoard를 할 때, 아이디 return?!!!)
     //todo 그 외 테스트 등에서도 다음과 같이 해야함.
     Long lastWriteBoardId = boardService.getLastWriteBoardId();
     redirectAttributes.addAttribute("boardId", lastWriteBoardId);
@@ -134,7 +134,7 @@ public class BoardController {
     return "redirect:/board/free/view/" + boardId;
   }
 
-  /*
+  /* AJAX
   비밀번호 확인 (업데이트)
    */
   @ResponseBody
@@ -162,19 +162,23 @@ public class BoardController {
   public String updateBoard(@PathVariable Long boardId,
       @Valid @ModelAttribute BoardUpdateDto reqDto) {
     reqDto.setUpdatedTime(LocalDateTime.now()); //업데이트 시간 변경
-    log.info(reqDto.toString());
+//    log.info(reqDto.toString());
     boardService.updateBoard(reqDto);
     return "redirect:/board/free/view/" + boardId;
   }
 
-  /*
+  /* AJAX
   비밀번호 확인 후 삭제
  */
   @ResponseBody
   @PostMapping("/checkPwd")
   public boolean checkPasswordForDelete(@ModelAttribute BoardPasswordConfirmDto reqDto) {
     boolean samePassword = boardService.isSamePassword(reqDto);
-    log.info("수정을 위한 비밀번호 확인 성공 여부 : " + samePassword);
+    log.info("삭제를 위한 비밀번호 확인 성공 여부 : " + samePassword);
+    log.info(reqDto.toString());
+    if (samePassword) {
+      boardService.deleteBoard(reqDto.BoardId); //삭제
+    }
     return samePassword;
   }
 
