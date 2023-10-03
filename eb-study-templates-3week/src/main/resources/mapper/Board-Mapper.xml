@@ -100,6 +100,7 @@
     <result property="viewCount" column="view_count"/>
     <result property="createdTime" column="created_time"/>
     <result property="updatedTime" column="updated_time"/>
+    <result property="haveFile" column="have_file"/>
     <association property="category" column="category_id" javaType="CategoryDto">
       <id property="categoryId" column="category_id"/>
       <result property="categoryName" column="category_name"/>
@@ -122,9 +123,12 @@
     SELECT b.*,
     (SELECT c.category_name
     FROM t_category c
-    WHERE c.category_id = b.category_id) as category_name
-    FROM t_board b
+    WHERE c.category_id = b.category_id) as category_name,
+    (SELECT IF(count(*)>0 ,1,0)
+    FROM t_file f
+    WHERE f.board_id=b.board_id) as have_file
 
+    FROM t_board b
     WHERE 1=1
     <if test='startDate !=null and !startDate.equals("")'>
       AND created_time <![CDATA[>=]]> #{startDate}

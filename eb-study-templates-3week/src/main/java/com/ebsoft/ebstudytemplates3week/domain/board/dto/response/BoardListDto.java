@@ -8,11 +8,11 @@ import lombok.Data;
 public class BoardListDto {
 
   // 게시판 id
-  Long BoardId;
+  private Long BoardId;
   // 카테고리
-  CategoryDto category;
+  private CategoryDto category;
   // 작성자
-  String user;
+  private String user;
   //제목
   private String title;
   //내용
@@ -23,5 +23,7 @@ public class BoardListDto {
   private LocalDateTime createdTime;
   //업데이트 날짜
   private LocalDateTime updatedTime;
+  // 첨부파일 유무
+  private Boolean haveFile;
 
 }

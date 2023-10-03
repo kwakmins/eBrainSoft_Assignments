@@ -54,7 +54,9 @@
         <th class="col-sm-1" style="background-color: #eeeeee; text-align: center;">
           카테고리
         </th>
-        <th class="col-sm-5" style="background-color: #eeeeee; text-align: center;">
+        <th class="col-sm-1" style="background-color: #eeeeee; text-align: center;">
+        </th>
+        <th class="col-sm-4" style="background-color: #eeeeee; text-align: center;">
           제목
         </th>
         <th class="col-sm-1" style="background-color: #eeeeee; text-align: center;">
@@ -74,6 +76,11 @@
       <tbody th:each="board : ${boardList}">
       <tr>
         <td th:text="${board.category.categoryName}">
+        </td>
+        <td>
+          <th:block th:if="${board.haveFile}">
+            💾
+          </th:block>
         </td>
         <td>
           <!--       제목의 30자 이후는 ...으로 처리-->
