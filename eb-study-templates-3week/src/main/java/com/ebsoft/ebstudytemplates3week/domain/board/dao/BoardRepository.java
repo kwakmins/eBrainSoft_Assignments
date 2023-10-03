@@ -2,6 +2,7 @@ package com.ebsoft.ebstudytemplates3week.domain.board.dao;
 
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardPasswordConfirmDto;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardUpdateDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.SearchDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.response.BoardListDto;
@@ -29,4 +30,6 @@ public interface BoardRepository {
   List<BoardListDto> findAllBoardToListBySearch(SearchDto searchDto);
 
   Boolean passwordConfirm(BoardPasswordConfirmDto boardPasswordConfirmDto);
+
+  void updateBoard(BoardUpdateDto boardUpdateDto);
 }

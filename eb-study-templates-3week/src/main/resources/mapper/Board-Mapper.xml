@@ -151,4 +151,14 @@
     WHERE board_id = #{boardId}
   </select>
 
+  <update id="updateBoard" parameterType="BoardUpdateDto">
+    UPDATE t_board
+    SET user         = #{user},
+        password     = SHA2(#{password}, 256),
+        title        = #{title},
+        content      = #{content},
+        updated_time = #{updatedTime}
+    WHERE board_id = #{boardId}
+  </update>
+
 </mapper>

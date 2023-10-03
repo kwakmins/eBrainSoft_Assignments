@@ -148,7 +148,7 @@
     }).done(function (result) {
       var isPasswordMatch = result === "true";
       if (isPasswordMatch) {
-        window.location.href = "/board/free/boardUpdate?boardId=" + boardId;
+        window.location.href = "/board/free/update/" + boardId;
       } else {
         alert("비밀번호가 다릅니다.")
         window.location.reload();
