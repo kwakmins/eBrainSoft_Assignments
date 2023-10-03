@@ -2,6 +2,8 @@ package com.ebsoft.ebstudytemplates3week.domain.board.api;
 
 import com.ebsoft.ebstudytemplates3week.domain.board.application.BoardService;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardPasswordConfirmDto;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardUpdateDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.SearchDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.response.BoardListDto;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -63,7 +66,7 @@ public class BoardController {
     // log.info(reqDto.toString());
     boardService.addBoard(reqDto);
 
-    //todo id 자동 증분으로 인해, dto에 id가 없어, 마지막에 넣은 값을 얻어, 계산.
+    //todo id 자동 증분으로 인해, dto에 id가 없어, 마지막에 넣은 값을 얻어, 계산. (!!!addBoard를 할 때, 아이디 return?!!!)
     //todo 그 외 테스트 등에서도 다음과 같이 해야함.
     Long lastWriteBoardId = boardService.getLastWriteBoardId();
     redirectAttributes.addAttribute("boardId", lastWriteBoardId);
@@ -75,7 +78,7 @@ public class BoardController {
    */
   @GetMapping("/view/{id}")
   public String viewBoard(@PathVariable("id") Long boardId, Model model) {
-    BoardDto board = boardService.getBoardById(boardId);
+    BoardDto board = boardService.getBoardByIdViewPlus(boardId);
     log.info("댓글 수 : " + String.valueOf(board.getComments().size()));
     model.addAttribute("board", board);
     return "form/boardForm";
@@ -130,4 +133,53 @@ public class BoardController {
     commentService.addComment(reqDto); // 댓글 추가
     return "redirect:/board/free/view/" + boardId;
   }
+
+  /* AJAX
+  비밀번호 확인 (업데이트)
+   */
+  @ResponseBody
+  @GetMapping("/checkPwd")
+  public boolean checkPasswordForUpdate(@ModelAttribute BoardPasswordConfirmDto reqDto) {
+    boolean samePassword = boardService.isSamePassword(reqDto);
+    log.info("수정을 위한 비밀번호 확인 성공 여부 : " + samePassword);
+    return samePassword;
+  }
+
+  /*
+  게시물 업데이트 랜더링
+   */
+  @GetMapping("/update/{boardId}")
+  public String updateBoardForm(@PathVariable Long boardId, Model model) {
+    log.info("업데이트 게시물 번호:" + boardId);
+    model.addAttribute("board", boardService.getBoardById(boardId)); // 디폴트값 주기
+    return "form/boardUpdateForm";
+  }
+
+  /*
+  게시물 업데이트 액션
+   */
+  @PostMapping("/update/{boardId}")
+  public String updateBoard(@PathVariable Long boardId,
+      @Valid @ModelAttribute BoardUpdateDto reqDto) {
+    reqDto.setUpdatedTime(LocalDateTime.now()); //업데이트 시간 변경
+//    log.info(reqDto.toString());
+    boardService.updateBoard(reqDto);
+    return "redirect:/board/free/view/" + boardId;
+  }
+
+  /* AJAX
+  비밀번호 확인 후 삭제
+ */
+  @ResponseBody
+  @PostMapping("/checkPwd")
+  public boolean checkPasswordForDelete(@ModelAttribute BoardPasswordConfirmDto reqDto) {
+    boolean samePassword = boardService.isSamePassword(reqDto);
+    log.info("삭제를 위한 비밀번호 확인 성공 여부 : " + samePassword);
+    log.info(reqDto.toString());
+    if (samePassword) {
+      boardService.deleteBoard(reqDto.BoardId); //삭제
+    }
+    return samePassword;
+  }
+
 }

@@ -63,7 +63,7 @@ class BoardServiceTest {
     boardService.addBoard(globalBoardWriteDto); // 추가
     Long boardId = boardRepository.lastBoardId();
     log.info(boardId.toString());
-    BoardDto boardDto = boardService.getBoardById(boardId); // 조회수 +1
+    BoardDto boardDto = boardService.getBoardByIdViewPlus(boardId); // 조회수 +1
 
     assertThat(boardDto.getCreatedTime()).isEqualTo(
         globalBoardWriteDto.getCreatedTime()); // 불러 오기 테스트

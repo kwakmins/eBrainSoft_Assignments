@@ -2,6 +2,8 @@ package com.ebsoft.ebstudytemplates3week.domain.board.application;
 
 import com.ebsoft.ebstudytemplates3week.domain.board.dao.BoardRepository;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.BoardDto;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardPasswordConfirmDto;
+import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardUpdateDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.SearchDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.response.BoardListDto;
@@ -27,11 +29,19 @@ public class BoardService {
   }
 
   /*
-  id로 게시판 조회 + 조회수 증가
+  id로 게시판 조회 + 조회수 증가 O
    */
   @Transactional
-  public BoardDto getBoardById(Long boardId) {
+  public BoardDto getBoardByIdViewPlus(Long boardId) {
     boardRepository.addView(boardId);
+    return boardRepository.findBoardById(boardId);
+  }
+
+  /*
+id로 게시판 조회 + 조회수 증가 X
+ */
+  @Transactional
+  public BoardDto getBoardById(Long boardId) {
     return boardRepository.findBoardById(boardId);
   }
 
@@ -68,5 +78,28 @@ public class BoardService {
    */
   public int getTotalBoardCnt(SearchDto searchDto) {
     return boardRepository.totalBoardCntBySearch(searchDto);
+  }
+
+  /*
+  비밀번호가 같은지 확인
+   */
+  public boolean isSamePassword(BoardPasswordConfirmDto boardPasswordConfirmDto) {
+    return boardRepository.passwordConfirm(boardPasswordConfirmDto);
+  }
+
+  /*
+  게시판 업데이트
+   */
+  @Transactional
+  public void updateBoard(BoardUpdateDto reqDto) {
+    boardRepository.updateBoard(reqDto);
+  }
+
+  /*
+  게시판 삭제
+   */
+  @Transactional
+  public void deleteBoard(Long boardId) {
+    boardRepository.deleteBoard(boardId);
   }
 }
