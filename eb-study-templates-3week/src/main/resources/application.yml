@@ -17,3 +17,6 @@ mybatis:
   type-aliases-package: com.ebsoft.ebstudytemplates3week
   configuration:
     arg-name-based-constructor-auto-mapping: true
+
+file:
+  dir: C:/Users/alstj/Desktop/files/

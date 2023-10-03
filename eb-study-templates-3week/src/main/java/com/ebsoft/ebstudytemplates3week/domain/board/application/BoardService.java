@@ -7,24 +7,31 @@ import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardUpdateDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.SearchDto;
 import com.ebsoft.ebstudytemplates3week.domain.board.dto.response.BoardListDto;
+import com.ebsoft.ebstudytemplates3week.domain.file.application.FileService;
+import com.ebsoft.ebstudytemplates3week.domain.file.convenience.FileStore;
 import com.ebsoft.ebstudytemplates3week.global.paging.Pagination;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class BoardService {
 
   private final BoardRepository boardRepository;
+  private final FileStore fileStore;
+  private final FileService fileService;
 
   /*
   게시판을 글쓰기 폼에서 받은 dto를 통해, 생성한다.
    */
   @Transactional
   public void addBoard(BoardWriteDto reqDto) {
+    fileService.addFile(reqDto);
     boardRepository.writeBoard(reqDto);
   }
 

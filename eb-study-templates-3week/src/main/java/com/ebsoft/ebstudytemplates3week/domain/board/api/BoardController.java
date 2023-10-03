@@ -54,22 +54,25 @@ public class BoardController {
   @PostMapping("/write")
   public String writeBoard(@Valid @ModelAttribute BoardWriteDto reqDto,
       RedirectAttributes redirectAttributes) {
-    reqDto.setCreatedTime(LocalDateTime.now());
-    reqDto.setUpdatedTime(LocalDateTime.now());
-
-    // 비밀번호 확인이 틀린 경우.
-    if (!reqDto.getPassword().equals(reqDto.getPasswordConfirm())) {
-      throw new IllegalArgumentException();
-      // todo 프론트단에서 이미 제약조건을 걸었는데,
-      // todo 다른 방식으로 억지로 값을 넣은 대상에게, 친절하게 bindResult로 담아서 줄 필요가 있을까?
-    }
-    // log.info(reqDto.toString());
-    boardService.addBoard(reqDto);
+    reqDto.setCreatedTime(LocalDateTime.now()); // 현재 시간 넣기
+    reqDto.setUpdatedTime(LocalDateTime.now()); // 현재 시간 넣기
 
     //todo id 자동 증분으로 인해, dto에 id가 없어, 마지막에 넣은 값을 얻어, 계산. (!!!addBoard를 할 때, 아이디 return?!!!)
     //todo 그 외 테스트 등에서도 다음과 같이 해야함.
-    Long lastWriteBoardId = boardService.getLastWriteBoardId();
-    redirectAttributes.addAttribute("boardId", lastWriteBoardId);
+    Long boardId = boardService.getLastWriteBoardId(); //이번에 사용될 id
+    reqDto.setBoardId(boardId);
+
+    // 비밀번호 확인이 틀린 경우.
+    // todo 프론트단에서 이미 제약조건을 걸었는데,
+    // todo 다른 방식으로 억지로 값을 넣은 대상에게, 친절하게 bindResult로 담아서 줄 필요가 있을까?
+    if (!reqDto.getPassword().equals(reqDto.getPasswordConfirm())) {
+      throw new IllegalArgumentException();
+    }
+    // log.info(reqDto.toString());
+    boardService.addBoard(reqDto); // 게시물 추가
+
+    // 작성된 게시글 상세 보기로 이동
+    redirectAttributes.addAttribute("boardId", boardId);
     return "redirect:/board/free/view/{boardId}";
   }
 

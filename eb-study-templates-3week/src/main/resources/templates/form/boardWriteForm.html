@@ -10,7 +10,7 @@
 
 <div class="container">
   <div class="highlight" style="padding-top: 20px;">
-    <form th:action th:method="post" th:object="${boardWriteDto}">
+    <form th:action th:method="post" th:object="${boardWriteDto}" enctype="multipart/form-data">
       <div class="row mb-3">
         <div class="col-sm-4">
           <label for="category" class="form-label">카테고리</label>
@@ -75,6 +75,22 @@
                         <textarea class="form-control" id="content" th:field="*{content}"
                                   style="height: 350px;" minlength="4" maxlength="2000"
                                   required></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-sm-4 d-flex align-items-center">
+          <label for="content" class="form-label">파일 첨부</label>
+        </div>
+        <div class="col-sm-8">
+          <div class="form-group">
+            <input type="file" name="files"/>
+          </div>
+          <div class="form-group">
+            <input type="file" name="files"/>
+          </div>
+          <div class="form-group">
+            <input type="file" name="files"/>
           </div>
         </div>
       </div>
