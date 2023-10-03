@@ -22,6 +22,9 @@ public class FileService {
   private final FileRepository fileRepository;
   private final FileStore fileStore;
 
+  /*
+  파일 추가
+   */
   @Transactional
   public void addFile(BoardWriteDto boardWriteDto) {
     try {
@@ -36,5 +39,12 @@ public class FileService {
       log.info("파일을 추가하는데 오류가 발생했습니다.");
       throw new IllegalArgumentException();
     }
+  }
+
+  /*
+  파일 조회
+   */
+  public FileDto getFileDtoByFileId(Long fileId) {
+    return fileRepository.findFileById(fileId);
   }
 }

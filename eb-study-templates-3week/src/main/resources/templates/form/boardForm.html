@@ -33,6 +33,12 @@
     </div>
   </div>
 
+  <!-- 첨부 파일-->
+  <th:block th:each="file : ${board.files}">
+    <br>
+    <a th:href="|file/${file.fileId}|" th:text="${file.fileName}"></a>
+  </th:block>
+
   <!-- 댓글 입력 란 -->
   <div class="row mt-4" style="background-color: #dddddd">
     <div>

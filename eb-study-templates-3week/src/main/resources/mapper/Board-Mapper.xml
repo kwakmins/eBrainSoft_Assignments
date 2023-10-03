@@ -20,6 +20,14 @@
     <result property="createdTime" column="comment_created_time"/>
   </resultMap>
 
+  <!-- 파일 조회 맵-->
+  <resultMap id="file" type="FileDto">
+    <result property="fileId" column="file_id"/>
+    <result property="boardId" column="board_id"/>
+    <result property="fileName" column="file_name"/>
+    <result property="storeName" column="file_store_name"/>
+  </resultMap>
+
   <!-- 게시판 조회 맵-->
   <resultMap id="board" type="BoardDto">
     <id property="boardId" column="board_id"/>
@@ -35,6 +43,7 @@
       <result property="categoryName" column="category_name"/>
     </association>
     <collection property="comments" resultMap="comment"/>
+    <collection property="files" resultMap="file"/>
   </resultMap>
 
   <select id="findBoardById" resultMap="board">
@@ -45,9 +54,14 @@
                           as category_name,
 #            이름이 겹치면 안됨
            c.content      as comment_content,
-           c.created_time as comment_created_time
+           c.created_time as comment_created_time,
+           f.file_id      as file_id,
+           f.file_name    as file_name,
+           f.store_name   as file_store_name
+
     FROM t_board b
            LEFT JOIN t_comment c ON b.board_id = c.board_id
+           LEFT JOIN t_file f ON b.board_id = f.board_id
     WHERE b.board_id = #{boardId}
   </select>
 
