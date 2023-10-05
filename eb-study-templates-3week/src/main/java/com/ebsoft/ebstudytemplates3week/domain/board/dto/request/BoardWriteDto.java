@@ -1,6 +1,7 @@
 package com.ebsoft.ebstudytemplates3week.domain.board.dto.request;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -10,6 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
@@ -17,6 +19,7 @@ import org.hibernate.validator.constraints.Length;
 @AllArgsConstructor
 public class BoardWriteDto {
 
+  private Long boardId;
   // 카테고리
   @NotNull
   @Positive
@@ -44,4 +47,6 @@ public class BoardWriteDto {
   private LocalDateTime createdTime;
   // 업데이트 시간
   private LocalDateTime updatedTime;
+  // 파일
+  private List<MultipartFile> files;
 }

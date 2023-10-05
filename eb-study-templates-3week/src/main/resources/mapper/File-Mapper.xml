@@ -3,5 +3,36 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ebsoft.ebstudytemplates3week.domain.file.dao.FileRepository">
+  <!--  파일 저장-->
+  <insert id="saveFiles" parameterType="FileWriteDto">
+    INSERT INTO t_file
+    VALUES
+    <foreach collection="list" index="index" item="file" separator=",">
+      (
+      NULL,#{file.boardId},#{file.fileName},#{file.storeName}
+      )
+    </foreach>
+  </insert>
 
+  <!--  파일 조회-->
+  <resultMap id="file" type="FileDto">
+    <result property="fileId" column="file_id"/>
+    <result property="boardId" column="board_id"/>
+    <result property="fileName" column="file_name"/>
+    <result property="storeName" column="store_name"/>
+  </resultMap>
+
+  <select id="findFileById" resultMap="file" parameterType="Long">
+    SELECT *
+    FROM t_file
+    WHERE file_id = #{fileId}
+  </select>
+
+  <delete id="deleteFilesById" parameterType="long">
+    DELETE
+    FROM t_file
+    <foreach collection="list" index="index" item="fileId" separator=",">
+      WHERE file_id = #{file}
+    </foreach>
+  </delete>
 </mapper>

@@ -2,6 +2,7 @@ package com.ebsoft.ebstudytemplates3week.domain.board.dto;
 
 import com.ebsoft.ebstudytemplates3week.domain.category.dto.CategoryDto;
 import com.ebsoft.ebstudytemplates3week.domain.comment.dto.CommentDto;
+import com.ebsoft.ebstudytemplates3week.domain.file.dto.FileDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -35,4 +36,6 @@ public class BoardDto {
   private LocalDateTime updatedTime;
   // 댓글 리스트
   private List<CommentDto> comments;
+  // 파일 리스트
+  private List<FileDto> files;
 }

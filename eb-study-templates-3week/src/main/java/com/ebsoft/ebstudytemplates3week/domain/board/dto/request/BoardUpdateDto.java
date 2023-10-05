@@ -1,11 +1,13 @@
 package com.ebsoft.ebstudytemplates3week.domain.board.dto.request;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class BoardUpdateDto {
@@ -31,4 +33,8 @@ public class BoardUpdateDto {
   private String content;
   // 업데이트 시간
   private LocalDateTime updatedTime;
+  // 파일 리스트
+  private List<MultipartFile> files;
+  // 삭제할 파일 리스트
+  private List<Long> deleteFiles;
 }
