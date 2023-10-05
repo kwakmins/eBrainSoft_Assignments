@@ -11,4 +11,6 @@ public interface FileRepository {
   void saveFiles(List<FileWriteDto> fileWriteDtos);
 
   FileDto findFileById(Long fileId);
+
+  void deleteFilesById(List<Long> deleteFiles);
 }

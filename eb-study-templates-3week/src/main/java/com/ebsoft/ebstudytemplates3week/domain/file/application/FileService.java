@@ -1,6 +1,5 @@
 package com.ebsoft.ebstudytemplates3week.domain.file.application;
 
-import com.ebsoft.ebstudytemplates3week.domain.board.dto.request.BoardWriteDto;
 import com.ebsoft.ebstudytemplates3week.domain.file.convenience.FileStore;
 import com.ebsoft.ebstudytemplates3week.domain.file.dao.FileRepository;
 import com.ebsoft.ebstudytemplates3week.domain.file.dto.FileDto;
@@ -12,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,12 +26,12 @@ public class FileService {
   파일 추가
    */
   @Transactional
-  public void addFile(BoardWriteDto boardWriteDto) {
+  public void addFile(List<MultipartFile> files, Long boardId) {
     try {
-      List<FileDto> fileDtos = fileStore.storeFiles(boardWriteDto.getFiles());
+      List<FileDto> fileDtos = fileStore.storeFiles(files);
       List<FileWriteDto> fileWriteDtos = new ArrayList<>();
       for (FileDto fileDto : fileDtos) {
-        fileWriteDtos.add(new FileWriteDto(boardWriteDto.getBoardId(), fileDto));
+        fileWriteDtos.add(new FileWriteDto(boardId, fileDto));
         log.info(fileDto.toString());
       }
       fileRepository.saveFiles(fileWriteDtos);
@@ -46,5 +46,10 @@ public class FileService {
    */
   public FileDto getFileDtoByFileId(Long fileId) {
     return fileRepository.findFileById(fileId);
+  }
+
+  @Transactional
+  public void deleteFiles(List<Long> deleteFiles) {
+    fileRepository.deleteFilesById(deleteFiles);
   }
 }

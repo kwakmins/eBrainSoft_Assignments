@@ -185,18 +185,22 @@ public class BoardController {
   @GetMapping("/update/{boardId}")
   public String updateBoardForm(@PathVariable Long boardId, Model model) {
     log.info("업데이트 게시물 번호:" + boardId);
-    model.addAttribute("board", boardService.getBoardById(boardId)); // 디폴트값 주기
+    BoardDto boardById = boardService.getBoardById(boardId);
+    log.info(boardById.getFiles().toString());
+    log.info("" + boardById.getFiles().size());
+    model.addAttribute("board", boardById); // 디폴트값 주기
     return "form/boardUpdateForm";
   }
 
   /*
   게시물 업데이트 액션
+  todo html에서 deleteFiles가 안넘어온다.
    */
   @PostMapping("/update/{boardId}")
   public String updateBoard(@PathVariable Long boardId,
       @Valid @ModelAttribute BoardUpdateDto reqDto) {
     reqDto.setUpdatedTime(LocalDateTime.now()); //업데이트 시간 변경
-//    log.info(reqDto.toString());
+    // log.info(reqDto.toString()); todo toString으로 비밀번호 제거하고 log를 찍기 vs 값을 로고로 안찍기
     boardService.updateBoard(reqDto);
     return "redirect:/board/free/view/" + boardId;
   }

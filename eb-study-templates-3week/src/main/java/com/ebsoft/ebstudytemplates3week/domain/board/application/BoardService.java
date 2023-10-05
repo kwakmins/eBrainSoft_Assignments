@@ -31,7 +31,7 @@ public class BoardService {
    */
   @Transactional
   public void addBoard(BoardWriteDto reqDto) {
-    fileService.addFile(reqDto);
+    fileService.addFile(reqDto.getFiles(), reqDto.getBoardId());
     boardRepository.writeBoard(reqDto);
   }
 
@@ -99,6 +99,11 @@ id로 게시판 조회 + 조회수 증가 X
    */
   @Transactional
   public void updateBoard(BoardUpdateDto reqDto) {
+    // 파일 삭제
+    fileService.deleteFiles(reqDto.getDeleteFiles());
+    // 파일 추가
+    fileService.addFile(reqDto.getFiles(), reqDto.boardId);
+    // 업데이트
     boardRepository.updateBoard(reqDto);
   }
 

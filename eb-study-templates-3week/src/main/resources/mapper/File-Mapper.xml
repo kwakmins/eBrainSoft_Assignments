@@ -27,4 +27,12 @@
     FROM t_file
     WHERE file_id = #{fileId}
   </select>
+
+  <delete id="deleteFilesById" parameterType="long">
+    DELETE
+    FROM t_file
+    <foreach collection="list" index="index" item="fileId" separator=",">
+      WHERE file_id = #{file}
+    </foreach>
+  </delete>
 </mapper>
