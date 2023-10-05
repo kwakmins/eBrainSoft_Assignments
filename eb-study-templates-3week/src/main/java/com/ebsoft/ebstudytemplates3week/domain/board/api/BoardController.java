@@ -19,6 +19,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -173,9 +175,17 @@ public class BoardController {
    */
   @ResponseBody
   @GetMapping("/checkPwd")
-  public boolean checkPasswordForUpdate(@ModelAttribute BoardPasswordConfirmDto reqDto) {
+  public boolean checkPasswordForUpdate(@ModelAttribute BoardPasswordConfirmDto reqDto,
+      HttpServletRequest request) {
     boolean samePassword = boardService.isSamePassword(reqDto);
     log.info("수정을 위한 비밀번호 확인 성공 여부 : " + samePassword);
+
+    // 세션 담기 + JSESSIONID 쿠키 주기
+    if (samePassword) {
+      HttpSession session = request.getSession(); // 없으니까 생성됨.
+      session.setAttribute("passConfirm", reqDto); // response에 자동으로 쿠키 추가됨
+    }
+
     return samePassword;
   }
 
