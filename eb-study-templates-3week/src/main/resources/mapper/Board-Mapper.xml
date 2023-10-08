@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ebsoft.ebstudytemplates3week.domain.board.dao.BoardRepository">
+
+  <!--  게시판 생성-->
+  <insert id="writeBoard" parameterType="BoardWriteDto">
+    INSERT INTO t_board
+    VALUES ( NULL, #{categoryId}, #{user}, SHA2(#{password}, 256), #{title}
+           , #{content}, DEFAULT, #{createdTime}, #{updatedTime})
+  </insert>
+
+  <!-- id로 게시판 조회-->
+
+  <!--댓글 조회 맵-->
+  <resultMap id="comment" type="CommentDto">
+    <result property="boardId" column="board_id"/>
+    <result property="content" column="comment_content"/>
+    <result property="createdTime" column="comment_created_time"/>
+  </resultMap>
+
+  <!-- 파일 조회 맵-->
+  <resultMap id="file" type="FileDto">
+    <result property="fileId" column="file_id"/>
+    <result property="boardId" column="board_id"/>
+    <result property="fileName" column="file_name"/>
+    <result property="storeName" column="file_store_name"/>
+  </resultMap>
+
+  <!-- 게시판 조회 맵-->
+  <resultMap id="board" type="BoardDto">
+    <id property="boardId" column="board_id"/>
+    <result property="user" column="user"/>
+    <result property="password" column="password"/>
+    <result property="title" column="title"/>
+    <result property="content" column="content"/>
+    <result property="viewCount" column="view_count"/>
+    <result property="createdTime" column="created_time"/>
+    <result property="updatedTime" column="updated_time"/>
+    <association property="category" column="category_id" javaType="CategoryDto">
+      <id property="categoryId" column="category_id"/>
+      <result property="categoryName" column="category_name"/>
+    </association>
+    <collection property="comments" resultMap="comment"/>
+    <collection property="files" resultMap="file"/>
+  </resultMap>
+
+  <select id="findBoardById" resultMap="board">
+    SELECT b.*,
+           (SELECT c.category_name
+            FROM t_category c
+            WHERE c.category_id = b.category_id)
+                          as category_name,
+#            이름이 겹치면 안됨
+           c.content      as comment_content,
+           c.created_time as comment_created_time,
+           f.file_id      as file_id,
+           f.file_name    as file_name,
+           f.store_name   as file_store_name
+
+    FROM t_board b
+           LEFT JOIN t_comment c ON b.board_id = c.board_id
+           LEFT JOIN t_file f ON b.board_id = f.board_id
+    WHERE b.board_id = #{boardId}
+  </select>
+
+  <!-- 조회수 증가-->
+  <update id="addView">
+    UPDATE t_board
+    SET view_count = view_count + 1
+    WHERE board_id = #{boardId}
+  </update>
+
+  <!-- 게시글 총 합-->
+  <select id="totalBoardCnt" resultType="int">
+    SELECT COUNT(*)
+    FROM t_board
+  </select>
+
+  <!-- 게시글 총 합 (검색) -->
+  <select id="totalBoardCntBySearch" parameterType="SearchDto" resultType="int">
+    SELECT count(*)
+    FROM t_board
+    WHERE 1=1
+    <if test='startDate !=null and !startDate.equals("")'>
+      AND created_time <![CDATA[>=]]> #{startDate}
+    </if>
+    <if test='endDate !=null and !endDate.equals("")'>
+      AND created_time <![CDATA[<=]]> #{endDate}
+    </if>
+    <if test='category !=null and category !=0'>
+      AND category_id = #{category}
+    </if>
+    <if test='searchContent !=null and !searchContent.equals("")'>
+      AND title Like CONCAT('%',#{searchContent},'%')
+      OR user Like CONCAT('%',#{searchContent},'%')
+      OR content Like CONCAT('%',#{searchContent},'%')
+    </if>
+  </select>
+
+  <!-- 마지막 게시판 id 값-->
+  <select id="lastBoardId" resultType="Long">
+    SELECT MAX(board_id)
+    FROM t_board
+  </select>
+
+  <!-- 게시판 목록으로 조회-->
+  <resultMap id="boardList" type="BoardListDto">
+    <id property="boardId" column="board_id"/>
+    <result property="user" column="user"/>
+    <result property="title" column="title"/>
+    <result property="content" column="content"/>
+    <result property="viewCount" column="view_count"/>
+    <result property="createdTime" column="created_time"/>
+    <result property="updatedTime" column="updated_time"/>
+    <result property="haveFile" column="have_file"/>
+    <association property="category" column="category_id" javaType="CategoryDto">
+      <id property="categoryId" column="category_id"/>
+      <result property="categoryName" column="category_name"/>
+    </association>
+  </resultMap>
+
+  <!--  검색 X-->
+  <select id="findAllBoardToList" parameterType="Pagination" resultMap="boardList">
+    SELECT b.*,
+           (SELECT c.category_name
+            FROM t_category c
+            WHERE c.category_id = b.category_id) as category_name
+    FROM t_board b
+    ORDER BY board_id DESC
+    LIMIT #{rowCount} OFFSET #{offset}
+  </select>
+
+  <!--  검색 O-->
+  <select id="findAllBoardToListBySearch" parameterType="SearchDto" resultMap="boardList">
+    SELECT b.*,
+    (SELECT c.category_name
+    FROM t_category c
+    WHERE c.category_id = b.category_id) as category_name,
+    (SELECT IF(count(*)>0 ,1,0)
+    FROM t_file f
+    WHERE f.board_id=b.board_id) as have_file
+
+    FROM t_board b
+    WHERE 1=1
+    <if test='startDate !=null and !startDate.equals("")'>
+      AND created_time <![CDATA[>=]]> #{startDate}
+    </if>
+    <if test='endDate !=null and !endDate.equals("")'>
+      AND created_time <![CDATA[<=]]> #{endDate}
+    </if>
+    <if test='category !=null and category !=0'>
+      AND category_id = #{category}
+    </if>
+    <if test='searchContent !=null and !searchContent.equals("")'>
+      AND title Like CONCAT('%',#{searchContent},'%')
+      OR user Like CONCAT('%',#{searchContent},'%')
+      OR content Like CONCAT('%',#{searchContent},'%')
+    </if>
+
+    ORDER BY board_id DESC
+    LIMIT #{pagination.rowCount} OFFSET #{pagination.offset}
+  </select>
+
+  <select id="passwordConfirm" resultType="boolean" parameterType="BoardPasswordConfirmDto">
+    SELECT IF(password = SHA2(#{password}, 256), 1, 0)
+    FROM t_board
+    WHERE board_id = #{boardId}
+  </select>
+
+  <update id="updateBoard" parameterType="BoardUpdateDto">
+    UPDATE t_board
+    SET user         = #{user},
+        password     = SHA2(#{password}, 256),
+        title        = #{title},
+        content      = #{content},
+        updated_time = #{updatedTime}
+    WHERE board_id = #{boardId}
+  </update>
+
+  <delete id="deleteBoard" parameterType="Long">
+    DELETE
+    FROM t_board
+    WHERE board_id = #{boardId}
+  </delete>
+</mapper>

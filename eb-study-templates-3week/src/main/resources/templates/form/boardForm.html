@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>웹 게시판</title>
+</head>
+<body>
+
+<div class="container mt-5">
+  게시판 - 보기
+  <div class="row mt-3">
+    <div class="col-md-6">
+      <h6 th:text="${board.user}"/>
+    </div>
+    <div class="col-md-6 text-right">
+      <h6 th:text="|등록 일시: ${#temporals.format(board.createdTime, 'yyyy-MM-dd HH:mm')}
+       수정일시: ${#temporals.format(board.updatedTime, 'yyyy-MM-dd HH:mm')}|"/>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-md-9">
+      <h4 th:text="|[${board.category.categoryName}] ${board.title}|"/>
+    </div>
+    <div class="col-md-3 text-right">
+      <p th:text="|조회수 ${board.viewCount}|"/>
+    </div>
+  </div>
+  <hr>
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <p th:text="${board.content}"/>
+    </div>
+  </div>
+
+  <!-- 첨부 파일-->
+  <th:block th:each="file : ${board.files}">
+    <br>
+    <a th:href="|file/${file.fileId}|" th:text="${file.fileName}"></a>
+  </th:block>
+
+  <!-- 댓글 입력 란 -->
+  <div class="row mt-4" style="background-color: #dddddd">
+    <div>
+      <th:block th:each="comment : ${board.getComments()}">
+        <br>
+        <p th:text="${#temporals.format(comment.createdTime, 'yyyy-MM-dd HH:mm')}"/>
+        <p th:text="${comment.content}"/>
+      </th:block>
+    </div>
+    <form th:action th:method="post" class="row mt-3">
+      <div class="col-md-11">
+        <label for="content"></label>
+        <textarea class="form-control" placeholder="댓글을 입력해 주세요" id="content"
+                  name="content" minlength="1" required></textarea>
+      </div>
+      <div class="col-md-1 text-right">
+        <button type="submit" class="btn btn-primary" id="save">등록</button>
+      </div>
+      <div>
+        <br>
+      </div>
+    </form>
+  </div>
+  <hr>
+
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-1">
+      <a th:onclick="|location.href='/board/free/list'|" class="btn btn-primary">목록</a>
+    </div>
+    <div class="col-md-1">
+      <a href="#" class="btn btn-primary" id="editButton">수정</a>
+    </div>
+    <div class="col-md-1">
+      <a href="#" class="btn btn-danger" id="deleteButton">삭제</a>
+    </div>
+  </div>
+</div>
+
+<!-- 레이어-->
+<!-- 히든 -->
+<input type="hidden" id="boardId" name="boardId" th:value="${board.boardId}"/>
+<!-- 수정 버튼을 클릭했을 때 비밀번호 입력 레이어 -->
+<div id="editPasswordModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">비밀번호 확인</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="editPassword">비밀번호:</label>
+            <input type="password" class="form-control" id="editPassword" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary" id="confirmEditPassword">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 삭제 버튼을 클릭했을 때 비밀번호 입력 레이어 -->
+<div id="deletePasswordModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">비밀번호 확인</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="deletePassword">비밀번호:</label>
+            <input type="password" class="form-control" id="deletePassword" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-danger" id="confirmDeletePassword">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 레이어 끝-->
+
+<!-- 비밀번호 확인 레이어-->
+<script>
+  // 수정 버튼 클릭 시 비밀번호 입력 레이어를 열기
+  document.getElementById("editButton").addEventListener("click", function () {
+    $("#editPasswordModal").modal("show");
+  });
+
+  // 비밀번호 확인 버튼 클릭 시 수정 화면으로 이동 (비밀번호 체크 필요)
+  document.getElementById("confirmEditPassword").addEventListener("click", function () {
+    var boardId = $("#boardId").val();
+    var enteredPassword = document.getElementById("editPassword").value;
+    $.ajax({
+      type: `Get`,
+      url: '/board/free/checkPwd',
+      data: {'password': enteredPassword, 'boardId': boardId},
+      dataType: "text"
+    }).done(function (result) {
+      var isPasswordMatch = result === "true";
+      if (isPasswordMatch) {
+        window.location.href = "/board/free/update/" + boardId;
+      } else {
+        alert("비밀번호가 다릅니다.")
+        window.location.reload();
+      }
+    }).fail(function (error) {
+      alert(JSON.stringify(error))
+    })
+  });
+
+  // 삭제 버튼 클릭 시 비밀번호 입력 레이어를 열기
+  document.getElementById("deleteButton").addEventListener("click", function () {
+    $("#deletePasswordModal").modal("show");
+  });
+
+  // 비밀번호 확인 버튼 클릭 시 삭제 동작 수행
+  document.getElementById("confirmDeletePassword").addEventListener("click", function () {
+    var boardId = $("#boardId").val();
+    var enteredPassword = document.getElementById("deletePassword").value;
+    $.ajax({
+      type: `Post`,
+      url: '/board/free/checkPwd',
+      data: {'password': enteredPassword, 'boardId': boardId},
+      dataType: "text"
+    }).done(function (result) {
+      var isPasswordMatch = result === "true";
+      if (isPasswordMatch) {
+        alert("삭제 성공!")
+        window.location.href = "/board/free/list";
+      } else {
+        alert("비밀번호가 다릅니다.")
+        window.location.reload();
+      }
+    }).fail(function (error) {
+      alert(JSON.stringify(error))
+    })
+  });
+</script>
+
+
+<link href=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+</body>
+</html>
