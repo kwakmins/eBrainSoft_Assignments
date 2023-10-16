@@ -8,6 +8,11 @@ import org.springframework.http.HttpStatus;
  */
 @Getter
 public enum ErrorCode {
+  //카테고리
+  CATEGORY_NOT_FOUND("해당 카테고리를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+
+  //게시판
+  BOARD_WRONG_PASSWORD_CONFIRM("비밀번호가 서로 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
   ;
   //오류 메시지
   private final String message;

@@ -1,17 +1,25 @@
 package com.ebsoft.ebstudytemplates4weekbackend.domain.board.api;
 
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.application.BoardService;
+import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.request.BoardWriteReqDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardWriteFormResDto;
+import java.net.URI;
+import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/board/free")
+@RequestMapping("/api/v1/board")
 public class BoardController {
 
   private final BoardService boardService;
@@ -38,5 +46,25 @@ public class BoardController {
 
     return ResponseEntity.status(HttpStatus.OK)
         .body(response);
+  }
+
+  /**
+   * 게시판 생성
+   *
+   * @param reqDto         게시판 작성한 ReqDto
+   * @param multipartFiles 게시판에 등록된 파일들
+   * @return 201, `/board/{생성된 게시판 id}` location
+   */
+  @PostMapping("/write")
+  public ResponseEntity<Void> createBoard(
+      @RequestBody @Valid BoardWriteReqDto reqDto,
+      @RequestPart(required = false) List<MultipartFile> multipartFiles
+  ) {
+
+    Long createdBoardId = boardService.createBoard(reqDto, multipartFiles);
+
+    return ResponseEntity.ok()
+        .location(URI.create("/board/" + createdBoardId))
+        .build();
   }
 }
