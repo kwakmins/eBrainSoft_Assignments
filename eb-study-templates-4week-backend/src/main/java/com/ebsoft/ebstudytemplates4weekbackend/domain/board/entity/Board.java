@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -69,4 +70,15 @@ public class Board extends BaseEntity {
   // 파일 리스트 (N:1)
   @OneToMany(mappedBy = "board", cascade = ALL)
   private List<File> files;
+
+  @Builder
+  public Board(Category category, String userName, String password, String title, String content,
+      Integer viewCount) {
+    this.category = category;
+    this.userName = userName;
+    this.password = password;
+    this.title = title;
+    this.content = content;
+    this.viewCount = viewCount;
+  }
 }
