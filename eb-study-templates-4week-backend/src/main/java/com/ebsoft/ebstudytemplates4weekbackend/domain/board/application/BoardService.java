@@ -55,12 +55,14 @@ public class BoardService {
     // Entity 생성
     Board board = reqDto.toEntity(category, encodedPassword);
 
-    // 파일 저장
+    // 게시판 저장 후, id 얻기
+    Long createdBoardId = boardRepository.save(board).getId(); //board에 자동으로 id가 주입됨
+    // 파일 저장 (파일 저장 후 게시판을 저장하면, boardId=null + file updateQuery 나감)
     if (multipartFiles != null) {
-      fileService.createFile(board, multipartFiles);
+      fileService.createFile(board, multipartFiles); //boardId != null
     }
-    // 저장 후, id 가져오기
-    return boardRepository.save(board).getId();
+
+    return createdBoardId;
   }
 
   /**
