@@ -2,12 +2,13 @@ package com.ebsoft.ebstudytemplates4weekbackend.domain.file.application;
 
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.entity.Board;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.file.dao.FileRepository;
+import com.ebsoft.ebstudytemplates4weekbackend.domain.file.entity.File;
 import com.ebsoft.ebstudytemplates4weekbackend.global.error.BusinessException;
 import com.ebsoft.ebstudytemplates4weekbackend.global.error.ErrorCode;
-import com.ebsoft.ebstudytemplates4weekbackend.global.util.file.FileDto;
 import com.ebsoft.ebstudytemplates4weekbackend.global.util.file.FileStore;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,10 +35,11 @@ public class FileService {
     validFileMaxSize(multipartFiles.size());
 
     try {
-      List<FileDto> fileDtos = fileStore.storeFiles(multipartFiles);
-      for (FileDto fileDto : fileDtos) {
-        fileRepository.save(fileDto.toEntity(board));
-      }
+      List<File> files = fileStore.storeFiles(multipartFiles).stream()
+          .map(fileDto -> fileDto.toEntity(board))
+          .collect(Collectors.toList());
+      
+      fileRepository.saveAll(files);
     } catch (IOException e) {
       throw new BusinessException(null, "file", ErrorCode.FILE_IO_EXCEPTION);
     }
