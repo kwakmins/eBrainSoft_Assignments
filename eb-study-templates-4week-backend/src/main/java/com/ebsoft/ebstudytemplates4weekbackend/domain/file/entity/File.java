@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,4 +44,10 @@ public class File {
   @Column(name = "store_name", nullable = false, length = MAX_STORE_NAME_LENGTH)
   private String storeName;
 
+  @Builder
+  public File(Board board, String fileName, String storeName) {
+    this.board = board;
+    this.fileName = fileName;
+    this.storeName = storeName;
+  }
 }

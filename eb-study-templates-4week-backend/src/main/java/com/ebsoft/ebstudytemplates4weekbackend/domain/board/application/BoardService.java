@@ -7,6 +7,7 @@ import com.ebsoft.ebstudytemplates4weekbackend.domain.board.entity.Board;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.category.dao.CategoryRepository;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.category.dto.response.CategoryResDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.category.entity.Category;
+import com.ebsoft.ebstudytemplates4weekbackend.domain.file.application.FileService;
 import com.ebsoft.ebstudytemplates4weekbackend.global.error.BusinessException;
 import com.ebsoft.ebstudytemplates4weekbackend.global.error.ErrorCode;
 import java.util.List;
@@ -25,6 +26,8 @@ public class BoardService {
   private final BoardRepository boardRepository;
   private final CategoryRepository categoryRepository;
   private final PasswordEncoder passwordEncoder;
+
+  private final FileService fileService;
 
   /**
    * 게시판 작성시 필요한 정보 전달.
@@ -52,6 +55,10 @@ public class BoardService {
     // Entity 생성
     Board board = reqDto.toEntity(category, encodedPassword);
 
+    // 파일 저장
+    if (multipartFiles != null) {
+      fileService.createFile(board, multipartFiles);
+    }
     // 저장 후, id 가져오기
     return boardRepository.save(board).getId();
   }

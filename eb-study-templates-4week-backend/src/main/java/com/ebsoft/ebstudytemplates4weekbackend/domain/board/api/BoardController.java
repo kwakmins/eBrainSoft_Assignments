@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,17 +50,17 @@ public class BoardController {
   /**
    * 게시판 생성
    *
-   * @param reqDto         게시판 작성한 ReqDto
-   * @param multipartFiles 게시판에 등록된 파일들
+   * @param request     게시판 작성한 ReqDto
+   * @param uploadFiles 게시판에 등록할 파일들
    * @return 201, `/board/{생성된 게시판 id}` location
    */
   @PostMapping("/write")
   public ResponseEntity<Void> createBoard(
-      @RequestBody @Valid BoardWriteReqDto reqDto,
-      @RequestPart(required = false) List<MultipartFile> multipartFiles
+      @RequestPart @Valid BoardWriteReqDto request,
+      @RequestPart(required = false) List<MultipartFile> uploadFiles
   ) {
 
-    Long createdBoardId = boardService.createBoard(reqDto, multipartFiles);
+    Long createdBoardId = boardService.createBoard(request, uploadFiles);
 
     return ResponseEntity.ok()
         .location(URI.create("/board/" + createdBoardId))

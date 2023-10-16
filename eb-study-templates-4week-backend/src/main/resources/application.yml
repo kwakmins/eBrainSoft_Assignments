@@ -21,3 +21,7 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
+
+#파일 저장소
+file:
+  dir: C:/Users/alstj/Desktop/files/
