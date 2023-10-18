@@ -1,10 +1,10 @@
 import {createRouter, createWebHistory} from "vue-router";
-import Board from "@/router/views/Board.vue";
+import BoardCreate from "@/router/views/Board/BoardCreate.vue";
 
 const routes = [
     {
-        path: "/board/free/",
-        component: Board,
+        path: "/board/free/write",
+        component: BoardCreate,
     }
 ];
 
