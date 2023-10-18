@@ -2,6 +2,7 @@ package com.ebsoft.ebstudytemplates4weekbackend.domain.board.application;
 
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dao.BoardRepository;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.request.BoardWriteReqDto;
+import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardDetailResDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardWriteFormResDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.entity.Board;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.category.dao.CategoryRepository;
@@ -42,6 +43,13 @@ public class BoardService {
     return BoardWriteFormResDto.form(categories);
   }
 
+  /**
+   * 게시판 생성
+   *
+   * @param reqDto         게시판 생성시 필요한 reqDto
+   * @param multipartFiles 게시판 첨부파일들
+   * @return 생성된 게시판 id
+   */
   @Transactional
   public Long createBoard(BoardWriteReqDto reqDto, List<MultipartFile> multipartFiles) {
     //비밀번호 일치 확인
@@ -86,6 +94,30 @@ public class BoardService {
     return categoryRepository.findById(categoryId).orElseThrow(
         () -> new BusinessException(categoryId, "categoryId",
             ErrorCode.CATEGORY_NOT_FOUND)
+    );
+  }
+
+  /**
+   * 게시판 id로 상세보기
+   *
+   * @param boardId 찾을 게시판 id
+   * @return 상세보기 게시판 resDto
+   */
+  public BoardDetailResDto getBoardDetail(Long boardId) {
+    Board board = getBoardById(boardId);
+
+    return new BoardDetailResDto(board);
+  }
+
+  /**
+   * 게시판 id로 게시판 찾기. 없으면 예외처리
+   *
+   * @param boardId 찾을 게시판 id
+   * @return 찾은 게시판 Entity
+   */
+  private Board getBoardById(Long boardId) {
+    return boardRepository.findWithCommentsById(boardId).orElseThrow(
+        () -> new BusinessException(boardId, "boardId", ErrorCode.BOARD_NOT_FOUND)
     );
   }
 }

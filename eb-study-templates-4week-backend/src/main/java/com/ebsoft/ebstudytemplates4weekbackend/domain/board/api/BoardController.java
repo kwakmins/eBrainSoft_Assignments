@@ -2,6 +2,7 @@ package com.ebsoft.ebstudytemplates4weekbackend.domain.board.api;
 
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.application.BoardService;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.request.BoardWriteReqDto;
+import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardDetailResDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardWriteFormResDto;
 import java.net.URI;
 import java.util.List;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -65,5 +67,21 @@ public class BoardController {
     return ResponseEntity.ok()
         .location(URI.create("/board/" + createdBoardId))
         .build();
+  }
+
+  /**
+   * 게시판 상세보기
+   *
+   * @param boardId 게시판 id
+   * @return 200, 상세보기 resDto
+   */
+  @GetMapping("/{boardId}")
+  public ResponseEntity<BoardDetailResDto> readBoard(
+      @PathVariable Long boardId
+  ) {
+    BoardDetailResDto response = boardService.getBoardDetail(boardId);
+
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(response);
   }
 }
