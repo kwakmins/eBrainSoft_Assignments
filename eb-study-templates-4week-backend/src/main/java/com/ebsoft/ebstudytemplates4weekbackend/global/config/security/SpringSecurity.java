@@ -21,8 +21,8 @@ public class SpringSecurity {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
-        .cors().disable()    //cors방지
-        .csrf().disable()    //csrf방지
+        .cors().and()    //cors 커스텀
+        .csrf().disable()    //csrf 방지
         .formLogin().disable()  //기본 로그인 페이지 없애기
         .headers().frameOptions().disable();
     return http.build();
