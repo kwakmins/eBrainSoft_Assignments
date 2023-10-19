@@ -38,7 +38,7 @@ public class FileService {
       List<File> files = fileStore.storeFiles(multipartFiles).stream()
           .map(fileDto -> fileDto.toEntity(board))
           .collect(Collectors.toList());
-      
+
       fileRepository.saveAll(files);
     } catch (IOException e) {
       throw new BusinessException(null, "file", ErrorCode.FILE_IO_EXCEPTION);
@@ -55,5 +55,34 @@ public class FileService {
       throw new BusinessException(size, "fileSize", ErrorCode.FILE_MAX_SIZE);
     }
   }
+
+  // todo 클라이언트에 리소스를 주지말고, 클라이언트 서버에서 받은 정보를 통해, 리소스를 가져오는게 맞다고 생각함.
+//  /**
+//   * 파일 Entity List를 리소스화
+//   *
+//   * @param files 파일 Entity 리스트
+//   * @return 리소스 리스트
+//   */
+//  public List<Resource> getFileResourceList(List<File> files) {
+//    return files.stream()
+//        .map(this::getFileResource)
+//        .collect(Collectors.toList());
+//  }
+//
+//  /**
+//   * 파일 Entity를 리소스화
+//   *
+//   * @param file 파일 Entity
+//   * @return 파일 리소스
+//   */
+//  private Resource getFileResource(File file) {
+//    try {
+//      Path path = Paths.get(fileStore.getFullPath(file.getFileName()));
+//
+//      return new InputStreamResource(Files.newInputStream(path));
+//    } catch (IOException e) {
+//      throw new BusinessException(file.getId(), "fileId", ErrorCode.FILE_IO_EXCEPTION);
+//    }
+//  }
 
 }
