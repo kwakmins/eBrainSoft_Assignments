@@ -3,17 +3,21 @@ package com.ebsoft.ebstudytemplates4weekbackend.domain.board.api;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.application.BoardService;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.request.BoardWriteReqDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardDetailResDto;
+import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardListResDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardWriteFormResDto;
 import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,6 +84,26 @@ public class BoardController {
       @PathVariable Long boardId
   ) {
     BoardDetailResDto response = boardService.getBoardDetail(boardId);
+
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(response);
+  }
+
+  /**
+   * 게시판 목록 조회
+   *
+   * @param pageable   페이지 정보
+   * @param categoryId 검색 카테고리 / null은 모두 검색
+   * @param search     검색명
+   * @return 200, 게시판 목록 rseDto
+   */
+  @GetMapping("")
+  public ResponseEntity<BoardListResDto> readBoards(
+      @PageableDefault(page = 0, size = 10) Pageable pageable,
+      @RequestParam(required = false) Long categoryId,
+      @RequestParam(defaultValue = "") String search
+  ) {
+    BoardListResDto response = boardService.getBoards(pageable, categoryId, search);
 
     return ResponseEntity.status(HttpStatus.OK)
         .body(response);
