@@ -1,10 +1,11 @@
 package com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response;
 
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.entity.Board;
-import com.ebsoft.ebstudytemplates4weekbackend.domain.comment.entity.Comment;
-import com.ebsoft.ebstudytemplates4weekbackend.domain.file.entity.File;
+import com.ebsoft.ebstudytemplates4weekbackend.domain.comment.dto.response.CommentResDto;
+import com.ebsoft.ebstudytemplates4weekbackend.domain.file.dto.response.FileResDto;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 
 @Getter
@@ -26,10 +27,10 @@ public class BoardDetailResDto {
   private Integer viewCount;
 
   // 댓글 리스트 (N:1)
-  private List<Comment> comments;
+  private List<CommentResDto> comments;
 
   // 파일 리스트 (N:1)
-  private List<File> files;
+  private List<FileResDto> files;
 
   // 작성일
   private LocalDateTime createdTime;
@@ -44,9 +45,13 @@ public class BoardDetailResDto {
     this.title = board.getTitle();
     this.content = board.getContent();
     this.viewCount = board.getViewCount();
-    this.comments = board.getComments();
     this.createdTime = board.getCreatedTime();
     this.updatedTime = board.getUpdatedTime();
-    this.files = board.getFiles();
+    this.comments = board.getComments().stream()
+        .map(CommentResDto::new)
+        .collect(Collectors.toList());
+    this.files = board.getFiles().stream()
+        .map(FileResDto::new)
+        .collect(Collectors.toList());
   }
 }

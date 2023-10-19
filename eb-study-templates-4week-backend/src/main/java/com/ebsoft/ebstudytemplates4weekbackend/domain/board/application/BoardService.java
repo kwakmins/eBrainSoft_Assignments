@@ -116,7 +116,7 @@ public class BoardService {
    * @return 찾은 게시판 Entity
    */
   private Board getBoardById(Long boardId) {
-    return boardRepository.findWithCommentsById(boardId).orElseThrow(
+    return boardRepository.findById(boardId).orElseThrow(
         () -> new BusinessException(boardId, "boardId", ErrorCode.BOARD_NOT_FOUND)
     );
   }
