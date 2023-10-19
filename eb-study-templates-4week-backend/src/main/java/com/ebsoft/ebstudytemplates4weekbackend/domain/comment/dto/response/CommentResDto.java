@@ -4,6 +4,9 @@ import com.ebsoft.ebstudytemplates4weekbackend.domain.comment.entity.Comment;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
+/**
+ * 댓글 조회 ResDto
+ */
 @Getter
 public class CommentResDto {
 

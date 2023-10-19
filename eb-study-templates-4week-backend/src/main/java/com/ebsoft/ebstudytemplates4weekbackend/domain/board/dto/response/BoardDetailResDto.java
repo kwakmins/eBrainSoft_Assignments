@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
+/**
+ * 게시판 상세보기 ResDto
+ */
 @Getter
 public class BoardDetailResDto {
 

@@ -5,6 +5,9 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * 게시판 작성폼에 필요한 정보 ResDto
+ */
 @Getter
 @AllArgsConstructor
 public class BoardWriteFormResDto {

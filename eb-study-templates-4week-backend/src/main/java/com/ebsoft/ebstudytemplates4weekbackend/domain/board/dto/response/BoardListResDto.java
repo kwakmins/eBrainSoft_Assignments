@@ -3,6 +3,9 @@ package com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response;
 import java.util.List;
 import lombok.Getter;
 
+/**
+ * 게시판 목록 조회 ResDto
+ */
 @Getter
 public class BoardListResDto {
 

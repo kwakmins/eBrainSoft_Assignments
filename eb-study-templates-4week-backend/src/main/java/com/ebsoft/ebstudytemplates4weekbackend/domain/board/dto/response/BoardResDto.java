@@ -4,6 +4,9 @@ import com.ebsoft.ebstudytemplates4weekbackend.domain.board.entity.Board;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
+/**
+ * 게시판 조회 ResDto
+ */
 @Getter
 public class BoardResDto {
 

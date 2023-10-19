@@ -3,6 +3,10 @@ package com.ebsoft.ebstudytemplates4weekbackend.domain.file.dto.response;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.file.entity.File;
 import lombok.Getter;
 
+/**
+ * 파일 조회 ResDto
+ */
+
 @Getter
 public class FileResDto {
 

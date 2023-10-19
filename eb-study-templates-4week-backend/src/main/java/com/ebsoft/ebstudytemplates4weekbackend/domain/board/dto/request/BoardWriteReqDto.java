@@ -12,6 +12,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+/**
+ * 게시판 작성 정보 받는 ReqDto
+ */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
