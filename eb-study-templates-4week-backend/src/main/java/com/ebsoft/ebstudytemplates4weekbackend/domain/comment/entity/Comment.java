@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,4 +39,10 @@ public class Comment extends BaseEntity {
   //댓글 내용
   @Column(name = "content", nullable = false, length = MAX_CONTENT_LENGTH)
   private String content;
+
+  @Builder
+  public Comment(Board board, String content) {
+    this.board = board;
+    this.content = content;
+  }
 }
