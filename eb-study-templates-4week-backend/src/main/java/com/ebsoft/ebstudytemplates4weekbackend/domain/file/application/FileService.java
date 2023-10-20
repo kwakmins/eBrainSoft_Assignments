@@ -46,6 +46,29 @@ public class FileService {
   }
 
   /**
+   * todo 코드 재활용성으로 이전 코드 지우고, 이번 코드로 합칠 수 있을 것 같지만, {?}service에서 {?}을 저장하는게 좋지 않을까?
+   *
+   * 멀티파트 파일 리스트를 엔티티 리스트로 변경
+   *
+   * @param board          게시판
+   * @param multipartFiles 멀티파트 파일
+   * @return 파일 엔티티 리스트
+   */
+  public List<File> multipartToEntity(Board board, List<MultipartFile> multipartFiles) {
+    validFileMaxSize(multipartFiles.size());
+
+    try {
+      List<File> files = fileStore.storeFiles(multipartFiles).stream()
+          .map(fileDto -> fileDto.toEntity(board))
+          .collect(Collectors.toList());
+
+      return files;
+    } catch (IOException e) {
+      throw new BusinessException(null, "file", ErrorCode.FILE_IO_EXCEPTION);
+    }
+  }
+
+  /**
    * 파일이 3개이상이면 예외 발상
    *
    * @param size 파일 리스트의 사이즈

@@ -1,6 +1,7 @@
 package com.ebsoft.ebstudytemplates4weekbackend.domain.board.api;
 
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.application.BoardService;
+import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.request.BoardUpdateReqDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.request.BoardWriteReqDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardDetailResDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardListResDto;
@@ -13,9 +14,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -111,5 +114,58 @@ public class BoardController {
 
     return ResponseEntity.status(HttpStatus.OK)
         .body(response);
+  }
+
+  /**
+   * 비밀번호 확인 핸들러. 틀리면 오류 Http Status
+   *
+   * @param boardId  게시판 id
+   * @param password 비밀번호
+   * @return 200, 틀리면 404
+   */
+  @GetMapping("/{boardId}/passwordCheck")
+  public ResponseEntity<Void> passwordCheck(
+      @PathVariable Long boardId,
+      @RequestParam String password
+  ) {
+    boardService.checkPassword(boardId, password);
+
+    return ResponseEntity.ok().build();
+  }
+
+  /**
+   * 게시판 수정
+   *
+   * @param boardId     게시판 id
+   * @param request     업데이트 내용
+   * @param uploadFiles 업데이트 파일
+   * @return 200, 수정된 게시판 id URL
+   */
+  @PutMapping("/{boardId}")
+  public ResponseEntity<Void> updateBoard(
+      @PathVariable Long boardId,
+      @RequestPart @Valid BoardUpdateReqDto request,
+      @RequestPart(required = false) List<MultipartFile> uploadFiles
+  ) {
+    Long updatedBoardId = boardService.updateBoard(boardId, request, uploadFiles);
+
+    return ResponseEntity.ok()
+        .location(URI.create("/board/" + updatedBoardId))
+        .build();
+  }
+
+  /**
+   * 게시판 삭제
+   *
+   * @param boardId 삭제할 게시판
+   * @return 200
+   */
+  @DeleteMapping("/{boardId}")
+  public ResponseEntity<Void> deleteBoard(
+      @PathVariable Long boardId
+  ) {
+    boardService.deleteBoard(boardId);
+
+    return ResponseEntity.ok().build();
   }
 }
