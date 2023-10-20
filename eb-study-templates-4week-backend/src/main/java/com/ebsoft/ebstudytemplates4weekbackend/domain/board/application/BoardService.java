@@ -134,7 +134,16 @@ public class BoardService {
    * @return 게시판 목록 정보 및 페이지에 관한 정보
    */
   public BoardListResDto getBoards(Pageable pageable, Long categoryId, String search) {
-    Page<Board> boards = boardRepository.findAll(pageable);
+    Page<Board> boards;
+
+    // 카테고리 유무에 따른, query문 변경
+    if (categoryId == null) {
+      boards = boardRepository.findBoardsByUserNameContainingOrContentContainingOrTitleContaining(
+          search, search, search, pageable);
+    } else {
+      boards = boardRepository.findSearchWithCategoryBoards(
+          getCategoryById(categoryId), search, pageable);
+    }
 
     return new BoardListResDto(boards.get()
         .map(BoardResDto::new)

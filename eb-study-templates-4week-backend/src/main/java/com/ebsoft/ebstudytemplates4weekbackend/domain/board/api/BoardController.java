@@ -103,6 +103,10 @@ public class BoardController {
       @RequestParam(required = false) Long categoryId,
       @RequestParam(defaultValue = "") String search
   ) {
+    //TODO categoryId가 NUll인 경우.
+    // 1. 컨트롤러에서 불러오는 메서드 변경(서비스에서 2메서드 사용) vs 2. 서비스에서 한 메서드로 처리 (채택)
+    // 1. 컨트롤러에서 로직이 발생.
+    // 2. null 값을 메서드로 넘기는 것이 찝찝함.
     BoardListResDto response = boardService.getBoards(pageable, categoryId, search);
 
     return ResponseEntity.status(HttpStatus.OK)
