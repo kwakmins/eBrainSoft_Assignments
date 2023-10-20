@@ -152,4 +152,19 @@ public class BoardService {
         boards.getTotalPages(),
         boards.getPageable().getPageNumber());
   }
+
+  /**
+   * 비밀번호 매치 확인
+   *
+   * @param boardId  게시판 id
+   * @param password 비밀번호
+   */
+  public void checkPassword(Long boardId, String password) {
+    boolean isMatchPassword = passwordEncoder.matches(password,
+        getBoardById(boardId).getPassword());
+
+    if (!isMatchPassword) {
+      throw new BusinessException(boardId, "boardId", ErrorCode.BOARD_WRONG_PASSWORD_CONFIRM);
+    }
+  }
 }

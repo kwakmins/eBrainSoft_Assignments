@@ -112,4 +112,21 @@ public class BoardController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(response);
   }
+
+  /**
+   * 비밀번호 확인 핸들러. 틀리면 오류 Http Status
+   *
+   * @param boardId  게시판 id
+   * @param password 비밀번호
+   * @return 200, 틀리면 404
+   */
+  @GetMapping("/{boardId}/passwordCheck")
+  public ResponseEntity<Void> passwordCheck(
+      @PathVariable Long boardId,
+      @RequestParam String password
+  ) {
+    boardService.checkPassword(boardId, password);
+
+    return ResponseEntity.ok().build();
+  }
 }
