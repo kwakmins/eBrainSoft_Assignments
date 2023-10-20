@@ -5,6 +5,7 @@ import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.request.BoardUpdateReqDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.category.entity.Category;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.comment.entity.Comment;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.file.entity.File;
@@ -80,5 +81,12 @@ public class Board extends BaseEntity {
     this.title = title;
     this.content = content;
     this.viewCount = viewCount;
+  }
+
+  public void update(BoardUpdateReqDto updateReqDto, List<File> files) {
+    this.userName = updateReqDto.getUserName();
+    this.title = updateReqDto.getTitle();
+    this.content = updateReqDto.getContent();
+    this.files = files;
   }
 }

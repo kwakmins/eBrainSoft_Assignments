@@ -1,6 +1,7 @@
 package com.ebsoft.ebstudytemplates4weekbackend.domain.board.application;
 
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dao.BoardRepository;
+import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.request.BoardUpdateReqDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.request.BoardWriteReqDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardDetailResDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardListResDto;
@@ -11,6 +12,8 @@ import com.ebsoft.ebstudytemplates4weekbackend.domain.category.dao.CategoryRepos
 import com.ebsoft.ebstudytemplates4weekbackend.domain.category.dto.response.CategoryResDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.category.entity.Category;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.file.application.FileService;
+import com.ebsoft.ebstudytemplates4weekbackend.domain.file.dao.FileRepository;
+import com.ebsoft.ebstudytemplates4weekbackend.domain.file.entity.File;
 import com.ebsoft.ebstudytemplates4weekbackend.global.error.BusinessException;
 import com.ebsoft.ebstudytemplates4weekbackend.global.error.ErrorCode;
 import java.util.List;
@@ -33,6 +36,7 @@ public class BoardService {
   private final PasswordEncoder passwordEncoder;
 
   private final FileService fileService;
+  private final FileRepository fileRepository;
 
   /**
    * 게시판 작성시 필요한 정보 전달.
@@ -166,5 +170,29 @@ public class BoardService {
     if (!isMatchPassword) {
       throw new BusinessException(boardId, "boardId", ErrorCode.BOARD_WRONG_PASSWORD_CONFIRM);
     }
+  }
+
+  /**
+   * 게시판 업데이트
+   *
+   * @param boardId        업데이트할 게시판
+   * @param request        업데이트 내용
+   * @param multipartFiles 업데이트 파일
+   * @return 업데이트된 게시판 id
+   *
+   * TODO 파일 업데이트 시 기존 파일 모두 drop + 모두 insert 방식의 문제
+   */
+  @Transactional
+  public Long updateBoard(Long boardId, BoardUpdateReqDto request,
+      List<MultipartFile> multipartFiles) {
+    checkPassword(boardId, request.getPassword()); //비밀번호가 같은지 체크.(수정 불가능)
+
+    Board board = getBoardById(boardId);
+
+    fileRepository.deleteAll(board.getFiles()); //기존 파일 지우기
+    List<File> files = fileService.multipartToEntity(board, multipartFiles);
+    board.update(request, files);
+
+    return boardId;
   }
 }

@@ -1,6 +1,7 @@
 package com.ebsoft.ebstudytemplates4weekbackend.domain.board.api;
 
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.application.BoardService;
+import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.request.BoardUpdateReqDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.request.BoardWriteReqDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardDetailResDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardListResDto;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -128,5 +130,18 @@ public class BoardController {
     boardService.checkPassword(boardId, password);
 
     return ResponseEntity.ok().build();
+  }
+
+  @PutMapping("/{boardId}")
+  public ResponseEntity<Void> updateBoard(
+      @PathVariable Long boardId,
+      @RequestPart @Valid BoardUpdateReqDto request,
+      @RequestPart(required = false) List<MultipartFile> uploadFiles
+  ) {
+    Long updatedBoardId = boardService.updateBoard(boardId, request, uploadFiles);
+
+    return ResponseEntity.ok()
+        .location(URI.create("/board/" + updatedBoardId))
+        .build();
   }
 }
