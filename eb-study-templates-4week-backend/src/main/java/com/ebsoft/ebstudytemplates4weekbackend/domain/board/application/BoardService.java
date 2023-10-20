@@ -195,4 +195,16 @@ public class BoardService {
 
     return boardId;
   }
+
+  /**
+   * 게시판 삭제
+   *
+   * @param boardId 삭제할 게시판
+   */
+  @Transactional
+  public void deleteBoard(Long boardId) {
+    getBoardById(boardId); // 삭제할 게시판이 존재하지 않으면, 예외 처리
+
+    boardRepository.deleteById(boardId);
+  }
 }

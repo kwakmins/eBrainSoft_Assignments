@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -132,6 +133,14 @@ public class BoardController {
     return ResponseEntity.ok().build();
   }
 
+  /**
+   * 게시판 수정
+   *
+   * @param boardId     게시판 id
+   * @param request     업데이트 내용
+   * @param uploadFiles 업데이트 파일
+   * @return 200, 수정된 게시판 id URL
+   */
   @PutMapping("/{boardId}")
   public ResponseEntity<Void> updateBoard(
       @PathVariable Long boardId,
@@ -143,5 +152,20 @@ public class BoardController {
     return ResponseEntity.ok()
         .location(URI.create("/board/" + updatedBoardId))
         .build();
+  }
+
+  /**
+   * 게시판 삭제
+   *
+   * @param boardId 삭제할 게시판
+   * @return 200
+   */
+  @DeleteMapping("/{boardId}")
+  public ResponseEntity<Void> deleteBoard(
+      @PathVariable Long boardId
+  ) {
+    boardService.deleteBoard(boardId);
+
+    return ResponseEntity.ok().build();
   }
 }
