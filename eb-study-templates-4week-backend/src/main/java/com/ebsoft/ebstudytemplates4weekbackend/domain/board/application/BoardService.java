@@ -3,6 +3,8 @@ package com.ebsoft.ebstudytemplates4weekbackend.domain.board.application;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dao.BoardRepository;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.request.BoardWriteReqDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardDetailResDto;
+import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardListResDto;
+import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardResDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.dto.response.BoardWriteFormResDto;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.board.entity.Board;
 import com.ebsoft.ebstudytemplates4weekbackend.domain.category.dao.CategoryRepository;
@@ -14,6 +16,8 @@ import com.ebsoft.ebstudytemplates4weekbackend.global.error.ErrorCode;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,5 +123,33 @@ public class BoardService {
     return boardRepository.findById(boardId).orElseThrow(
         () -> new BusinessException(boardId, "boardId", ErrorCode.BOARD_NOT_FOUND)
     );
+  }
+
+  /**
+   * 게시판 검색 목록 조회
+   *
+   * @param pageable   페이지에 관한 정보
+   * @param categoryId 검색할 카테고리 id
+   * @param search     검색어
+   * @return 게시판 목록 정보 및 페이지에 관한 정보
+   */
+  public BoardListResDto getBoards(Pageable pageable, Long categoryId, String search) {
+    Page<Board> boards;
+
+    // 카테고리 유무에 따른, query문 변경
+    if (categoryId == null) {
+      boards = boardRepository.findBoardsByUserNameContainingOrContentContainingOrTitleContaining(
+          search, search, search, pageable);
+    } else {
+      boards = boardRepository.findSearchWithCategoryBoards(
+          getCategoryById(categoryId), search, pageable);
+    }
+
+    return new BoardListResDto(boards.get()
+        .map(BoardResDto::new)
+        .collect(Collectors.toList()),
+        boards.getTotalElements(),
+        boards.getTotalPages(),
+        boards.getPageable().getPageNumber());
   }
 }
