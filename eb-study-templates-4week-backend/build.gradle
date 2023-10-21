@@ -37,6 +37,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     //시큐리티 설치
     testImplementation 'org.springframework.security:spring-security-test'
+    //테스트용 h2 DB 설치
+    testImplementation 'com.h2database:h2'
 }
 
 tasks.named('test') {
