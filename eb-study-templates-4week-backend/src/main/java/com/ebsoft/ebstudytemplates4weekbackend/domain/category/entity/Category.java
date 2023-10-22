@@ -1,9 +1,11 @@
 package com.ebsoft.ebstudytemplates4weekbackend.domain.category.entity;
 
+import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Builder;
@@ -20,6 +22,7 @@ public class Category {
 
   //카테고리 id
   @Id
+  @GeneratedValue(strategy = IDENTITY)
   @Column(name = "category_id", nullable = false)
   private Long id;
 
