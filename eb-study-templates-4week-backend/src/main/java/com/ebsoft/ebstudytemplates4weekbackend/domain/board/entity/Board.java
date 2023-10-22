@@ -73,7 +73,8 @@ public class Board extends BaseEntity {
   private List<File> files;
 
   @Builder
-  public Board(Category category, String userName, String password, String title, String content,
+  public Board(Long id, Category category, String userName, String password, String title,
+      String content,
       Integer viewCount) {
     this.category = category;
     this.userName = userName;
@@ -81,6 +82,7 @@ public class Board extends BaseEntity {
     this.title = title;
     this.content = content;
     this.viewCount = viewCount;
+    this.id = id;
   }
 
   public void update(BoardUpdateReqDto updateReqDto, List<File> files) {
