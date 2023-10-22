@@ -71,7 +71,7 @@ public class BoardController {
 
     Long createdBoardId = boardService.createBoard(request, uploadFiles);
 
-    return ResponseEntity.ok()
+    return ResponseEntity.status(HttpStatus.CREATED)
         .location(URI.create("/board/" + createdBoardId))
         .build();
   }

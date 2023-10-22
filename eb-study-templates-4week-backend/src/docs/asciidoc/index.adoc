@@ -1,0 +1,13 @@
+= EbSoft 게시판 API 명세
+:doctype: book
+:icons: front
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:seclinks:
+:docinfo: shared-head
+
+include::Board.adoc[]
+
+
+
