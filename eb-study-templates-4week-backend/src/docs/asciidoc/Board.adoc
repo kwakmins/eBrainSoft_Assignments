@@ -1,0 +1,12 @@
+== Board
+
+=== 게시판 생성
+
+==== 201 성공
+
+operation::create-board/게시판을_정상적으로_생성하면_201_상태코드와_location을_줘야한다[snippets='http-request,http-response']
+
+==== 400 실패
+
+operation::create-board/게시판을_생성할_때_올바르_않은_데이터면_400_예외가_발생한다[snippets='http-request,http-response']
+
