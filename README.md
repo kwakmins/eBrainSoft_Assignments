@@ -1,7 +1,7 @@
 # [eBrainSoft] 웹개발 스터디 8기
 
-### [노션 상세 링크](https://invincible-sesame-584.notion.site/EBrainSoft-8-a0632661023942e78d9cdb159a20581b)
-노션에 핵심 구현 정리
+# [노션 상세 링크](https://invincible-sesame-584.notion.site/EBrainSoft-8-a0632661023942e78d9cdb159a20581b)
+노션에 핵심 구현 및 피드백 정리
 
 ## 진행 방식
 
