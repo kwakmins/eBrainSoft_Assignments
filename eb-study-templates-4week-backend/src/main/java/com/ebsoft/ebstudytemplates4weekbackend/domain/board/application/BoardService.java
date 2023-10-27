@@ -138,16 +138,10 @@ public class BoardService {
    * @return 게시판 목록 정보 및 페이지에 관한 정보
    */
   public BoardListResDto getBoards(Pageable pageable, Long categoryId, String search) {
-    Page<Board> boards;
+    Category category = categoryId != null ? getCategoryById(categoryId) : null;
 
-    // 카테고리 유무에 따른, query문 변경
-    if (categoryId == null) {
-      boards = boardRepository.findBoardsByUserNameContainingOrContentContainingOrTitleContaining(
-          search, search, search, pageable);
-    } else {
-      boards = boardRepository.findSearchWithCategoryBoards(
-          getCategoryById(categoryId), search, pageable);
-    }
+    Page<Board> boards = boardRepository.searchBoards(
+        category, search, pageable);
 
     return new BoardListResDto(boards.get()
         .map(BoardResDto::new)
@@ -179,7 +173,7 @@ public class BoardService {
    * @param request        업데이트 내용
    * @param multipartFiles 업데이트 파일
    * @return 업데이트된 게시판 id
-   *
+   * <p>
    * TODO 파일 업데이트 시 기존 파일 모두 drop + 모두 insert 방식의 문제
    */
   @Transactional
