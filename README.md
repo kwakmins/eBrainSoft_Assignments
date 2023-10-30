@@ -72,4 +72,4 @@ PR : [#43](https://github.com/kawkmin/eBrainSoft_Assignments/pull/43)
 
 PR :[#66](https://github.com/kawkmin/eBrainSoft_Assignments/pull/66)
 
-[RESTDocs 로 구현된 API 명세](src/main/resources/static/index.html)
+[RESTDocs 로 구현된 API 명세](eb-study-templates-4week-backend/src/main/resources/static/index.html)
